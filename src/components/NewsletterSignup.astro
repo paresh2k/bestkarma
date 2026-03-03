@@ -1,0 +1,98 @@
+---
+interface Props {
+  variant?: 'hero' | 'inline' | 'banner';
+  beehiivId?: string;
+}
+
+const {
+  variant = 'inline',
+  // Replace with your actual Beehiiv publication ID
+  beehiivId = 'YOUR_BEEHIIV_PUB_ID',
+} = Astro.props;
+---
+
+{variant === 'banner' ? (
+  <section id="newsletter" class="bg-sage py-20 px-6">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-sage-light text-sm font-semibold uppercase tracking-widest mb-4">Weekly Wellness</p>
+      <h2 class="font-heading text-4xl md:text-5xl font-semibold text-cream mb-4">
+        Wisdom for the long game
+      </h2>
+      <p class="text-cream/75 text-lg mb-10 leading-relaxed">
+        One evidence-based insight every week. No fluff, no fads — just the science of living well, delivered to your inbox.
+      </p>
+
+      <form
+        action={`https://app.beehiiv.com/subscribe/${beehiivId}`}
+        method="POST"
+        target="_blank"
+        class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+      >
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="your@email.com"
+          class="flex-1 px-5 py-3.5 rounded-full bg-cream/10 border border-cream/20 text-cream placeholder-cream/50 focus:outline-none focus:ring-2 focus:ring-cream/40 text-sm"
+        />
+        <button
+          type="submit"
+          class="px-6 py-3.5 bg-cream text-sage-dark font-semibold rounded-full hover:bg-gold-light transition-colors text-sm whitespace-nowrap"
+        >
+          Join Free →
+        </button>
+      </form>
+
+      <p class="text-cream/40 text-xs mt-4">
+        No spam, ever. Unsubscribe anytime.
+      </p>
+    </div>
+  </section>
+) : variant === 'hero' ? (
+  <form
+    action={`https://app.beehiiv.com/subscribe/${beehiivId}`}
+    method="POST"
+    target="_blank"
+    class="flex flex-col sm:flex-row gap-3 max-w-sm"
+  >
+    <input
+      type="email"
+      name="email"
+      required
+      placeholder="your@email.com"
+      class="flex-1 px-5 py-3 rounded-full bg-white/80 border border-border text-bark placeholder-stone-light focus:outline-none focus:ring-2 focus:ring-sage-light text-sm"
+    />
+    <button
+      type="submit"
+      class="px-6 py-3 bg-terracotta text-cream font-semibold rounded-full hover:bg-terracotta/90 transition-colors text-sm whitespace-nowrap"
+    >
+      Join Free
+    </button>
+  </form>
+) : (
+  <div class="bg-mist border border-sage-light/30 rounded-2xl p-8">
+    <h3 class="font-heading text-2xl font-semibold text-bark mb-2">Stay in the loop</h3>
+    <p class="text-stone text-sm mb-5">Weekly wellness insights, science-backed and human-curated.</p>
+    <form
+      action={`https://app.beehiiv.com/subscribe/${beehiivId}`}
+      method="POST"
+      target="_blank"
+      class="flex flex-col sm:flex-row gap-3"
+    >
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="your@email.com"
+        class="flex-1 px-4 py-3 rounded-full bg-cream border border-border text-bark placeholder-stone-light focus:outline-none focus:ring-2 focus:ring-sage-light text-sm"
+      />
+      <button
+        type="submit"
+        class="px-6 py-3 bg-sage text-cream font-medium rounded-full hover:bg-sage-dark transition-colors text-sm"
+      >
+        Subscribe
+      </button>
+    </form>
+    <p class="text-stone-light text-xs mt-3">Free, weekly, unsubscribe anytime.</p>
+  </div>
+)}

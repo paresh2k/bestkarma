@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* Earthy color palette */
+  --color-cream: #FAF7F0;
+  --color-cream-dark: #F0EBE0;
+  --color-sage: #7D9B76;
+  --color-sage-light: #B5C9B3;
+  --color-sage-dark: #4A6741;
+  --color-terracotta: #C47C5A;
+  --color-terracotta-light: #DBA48A;
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8D5A3;
+  --color-bark: #2D2016;
+  --color-stone: #6B5B45;
+  --color-stone-light: #9A8870;
+  --color-mist: #E8EDE7;
+  --color-border: #E0D8CC;
+
+  /* Typography */
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Spacing additions */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-28: 7rem;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    background-color: var(--color-cream);
+    color: var(--color-bark);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-bark);
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    transition: color 0.2s ease;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Prose customization for article content */
+@layer components {
+  .prose-bestkarma {
+    --tw-prose-body: var(--color-stone);
+    --tw-prose-headings: var(--color-bark);
+    --tw-prose-links: var(--color-sage-dark);
+    --tw-prose-bold: var(--color-bark);
+    --tw-prose-quotes: var(--color-stone);
+    --tw-prose-quote-borders: var(--color-sage);
+    --tw-prose-captions: var(--color-stone-light);
+    --tw-prose-code: var(--color-bark);
+    --tw-prose-hr: var(--color-border);
+    --tw-prose-th-borders: var(--color-border);
+    --tw-prose-td-borders: var(--color-border);
+  }
+
+  .prose-bestkarma h1,
+  .prose-bestkarma h2,
+  .prose-bestkarma h3 {
+    font-family: var(--font-heading);
+  }
+
+  .prose-bestkarma a:hover {
+    color: var(--color-sage);
+  }
+
+  .prose-bestkarma blockquote {
+    background-color: var(--color-mist);
+    border-left-color: var(--color-sage);
+    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 1rem 1.5rem;
+    font-style: normal;
+  }
+
+  .prose-bestkarma blockquote p {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--color-bark);
+  }
+}

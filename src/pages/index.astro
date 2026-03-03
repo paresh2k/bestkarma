@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredPosts = sortedPosts.slice(0, 3);
+
+const topics = [
+  {
+    name: 'Longevity',
+    description: 'The science of living longer, healthier lives — from telomeres to lifestyle.',
+    href: '/blog?category=longevity',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>`,
+    color: 'bg-gold-light/50 text-stone',
+  },
+  {
+    name: 'Nutrition',
+    description: 'Food as medicine. Evidence-based eating for energy, gut health, and longevity.',
+    href: '/blog?category=nutrition',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22 16 8"/><path d="M17.47 3.47a3.47 3.47 0 0 1 4.9 4.9L8 22 2 22l0-6Z"/><path d="m8 9.5 6.5 6.5"/></svg>`,
+    color: 'bg-terracotta-light/30 text-terracotta',
+  },
+  {
+    name: 'Sleep',
+    description: 'Optimize your nights for better days. The underrated pillar of health.',
+    href: '/blog?category=sleep',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
+    color: 'bg-mist text-sage-dark',
+  },
+  {
+    name: 'Mind & Body',
+    description: 'Mental wellness, mindfulness, movement, and the mind-body connection.',
+    href: '/blog?category=mind-body',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3a9 9 0 0 1 7 3.3"/></svg>`,
+    color: 'bg-sage-light/40 text-sage-dark',
+  },
+];
+---
+
+<BaseLayout title="BestKarma — Live Well, Age Wisely, Thrive Daily">
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-cream pt-16 pb-20 md:pt-24 md:pb-28">
+    <!-- Decorative background shape -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-sage-light/15"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-gold-light/20"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-sage-light/30 text-sage-dark text-xs font-semibold px-4 py-2 rounded-full mb-8 tracking-wide">
+          <span class="w-1.5 h-1.5 rounded-full bg-sage-dark"></span>
+          Science-backed wellness
+        </div>
+
+        <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-semibold text-bark leading-tight mb-6">
+          Live Well.<br />
+          Age Wisely.<br />
+          <span class="text-sage">Thrive Daily.</span>
+        </h1>
+
+        <p class="text-stone text-xl md:text-2xl leading-relaxed mb-10 max-w-2xl">
+          Evidence-based insights on longevity, nutrition, sleep, and mindset — for people who want to live a long, vibrant life.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 items-start">
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-2 bg-bark text-cream font-semibold px-7 py-4 rounded-full hover:bg-stone transition-colors text-base"
+          >
+            Explore Articles
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+          <div>
+            <p class="text-stone-light text-sm mb-2">Weekly wellness digest</p>
+            <NewsletterSignup variant="hero" />
+          </div>
+        </div>
+
+        <!-- Social proof -->
+        <p class="mt-8 text-stone-light text-sm">
+          Join thousands learning to live better, longer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Articles -->
+  {featuredPosts.length > 0 && (
+    <section class="py-20 px-6 bg-cream-dark/50">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex items-end justify-between mb-10">
+          <div>
+            <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">Latest</p>
+            <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">From the archive</h2>
+          </div>
+          <a href="/blog" class="hidden md:inline-flex items-center gap-1 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
+            All articles
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredPosts.map((post, i) => (
+            <ArticleCard
+              title={post.data.title}
+              description={post.data.description}
+              slug={post.id.replace(/\.mdx?$/, '')}
+              category={post.data.category}
+              pubDate={post.data.pubDate}
+              heroImage={post.data.heroImage}
+              readTime={post.data.readTime}
+              featured={i === 0}
+            />
+          ))}
+        </div>
+
+        <div class="mt-8 md:hidden">
+          <a href="/blog" class="inline-flex items-center gap-1 text-sage-dark font-medium text-sm">
+            View all articles →
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Topics Grid -->
+  <section class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Topics</p>
+        <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">What we cover</h2>
+        <p class="text-stone mt-3 text-lg max-w-xl mx-auto">
+          Every topic we explore is rooted in science and designed for real life.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {topics.map(topic => (
+          <a
+            href={topic.href}
+            class="group flex flex-col p-6 rounded-2xl bg-cream-dark border border-border hover:border-sage-light hover:shadow-md transition-all duration-300"
+          >
+            <div class={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${topic.color}`} set:html={topic.icon} />
+            <h3 class="font-heading font-semibold text-bark text-lg mb-2 group-hover:text-sage-dark transition-colors">
+              {topic.name}
+            </h3>
+            <p class="text-stone text-sm leading-relaxed flex-1">
+              {topic.description}
+            </p>
+            <span class="mt-4 text-sage-dark text-sm font-medium group-hover:gap-2 flex items-center gap-1 transition-all">
+              Explore
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter banner -->
+  <NewsletterSignup variant="banner" />
+
+  <!-- About teaser -->
+  <section class="py-20 px-6 bg-cream-dark/40">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="w-16 h-0.5 bg-sage mx-auto mb-8"></div>
+      <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark mb-5">
+        Science-backed. Human-curated.
+      </h2>
+      <p class="text-stone text-lg leading-relaxed max-w-2xl mx-auto">
+        BestKarma exists at the intersection of cutting-edge longevity research and practical, everyday wellness. We cut through the noise so you don't have to.
+      </p>
+      <a href="/about" class="inline-flex items-center gap-2 mt-8 text-sage-dark font-medium hover:text-sage transition-colors">
+        Our story →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,102 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  category: string;
+  pubDate: Date;
+  heroImage?: string;
+  readTime?: number;
+  featured?: boolean;
+}
+
+const {
+  title,
+  description,
+  slug,
+  category,
+  pubDate,
+  heroImage,
+  readTime = 5,
+  featured = false,
+} = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const categoryColors: Record<string, string> = {
+  wellness: 'bg-sage-light/40 text-sage-dark',
+  longevity: 'bg-gold-light/60 text-stone',
+  nutrition: 'bg-terracotta-light/30 text-terracotta',
+  sleep: 'bg-mist text-sage-dark',
+  'mind-body': 'bg-cream-dark text-stone',
+};
+
+const colorClass = categoryColors[category.toLowerCase()] ?? 'bg-mist text-stone';
+---
+
+<article class={`group flex flex-col bg-cream-dark rounded-2xl overflow-hidden border border-border hover:border-sage-light hover:shadow-lg transition-all duration-300 ${featured ? 'md:flex-row md:col-span-2' : ''}`}>
+  <!-- Image -->
+  {heroImage ? (
+    <div class={`relative overflow-hidden ${featured ? 'md:w-1/2 h-56 md:h-auto' : 'h-48'}`}>
+      <img
+        src={heroImage}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    </div>
+  ) : (
+    <div class={`relative overflow-hidden bg-gradient-to-br from-mist via-sage-light/20 to-cream-dark flex items-center justify-center ${featured ? 'md:w-1/2 h-56 md:h-auto' : 'h-48'}`}>
+      <!-- Botanical placeholder -->
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="opacity-30">
+        <path d="M40 70 C40 70 20 55 20 35 C20 20 30 10 40 10 C50 10 60 20 60 35 C60 55 40 70 40 70Z" fill="var(--color-sage)"/>
+        <path d="M40 40 C40 40 25 30 20 15 C18 8 22 5 28 8 C34 11 40 25 40 40Z" fill="var(--color-sage-dark)"/>
+        <path d="M40 40 C40 40 55 30 60 15 C62 8 58 5 52 8 C46 11 40 25 40 40Z" fill="var(--color-sage-dark)" opacity="0.7"/>
+        <line x1="40" y1="40" x2="40" y2="70" stroke="var(--color-sage)" stroke-width="2"/>
+      </svg>
+    </div>
+  )}
+
+  <!-- Content -->
+  <div class={`flex flex-col flex-1 p-6 ${featured ? 'md:p-8' : ''}`}>
+    <!-- Category + meta -->
+    <div class="flex items-center gap-3 mb-3">
+      <span class={`text-xs font-semibold px-3 py-1 rounded-full capitalize ${colorClass}`}>
+        {category}
+      </span>
+      <span class="text-stone-light text-xs">{readTime} min read</span>
+    </div>
+
+    <!-- Title -->
+    <a href={`/blog/${slug}`} class="group-hover:text-sage-dark transition-colors">
+      <h2 class={`font-heading font-semibold text-bark leading-tight mb-3 ${featured ? 'text-2xl md:text-3xl' : 'text-xl'}`}>
+        {title}
+      </h2>
+    </a>
+
+    <!-- Excerpt -->
+    <p class="text-stone text-sm leading-relaxed flex-1 mb-4 line-clamp-3">
+      {description}
+    </p>
+
+    <!-- Footer -->
+    <div class="flex items-center justify-between mt-auto pt-4 border-t border-border">
+      <time datetime={pubDate.toISOString()} class="text-stone-light text-xs">
+        {formattedDate}
+      </time>
+      <a
+        href={`/blog/${slug}`}
+        class="text-sage-dark text-sm font-medium hover:text-sage transition-colors flex items-center gap-1"
+      >
+        Read
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</article>

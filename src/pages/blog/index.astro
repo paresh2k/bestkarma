@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = ['All', 'Longevity', 'Nutrition', 'Sleep', 'Wellness', 'Mind & Body'];
+
+// Get active category from URL
+const activeCategory = Astro.url.searchParams.get('category') ?? 'all';
+const normalizedActive = activeCategory.toLowerCase();
+
+const filteredPosts = normalizedActive === 'all'
+  ? sortedPosts
+  : sortedPosts.filter(p => p.data.category.toLowerCase() === normalizedActive);
+---
+
+<BaseLayout
+  title="Articles — BestKarma"
+  description="Browse all wellness and longevity articles from BestKarma. Science-backed insights on nutrition, sleep, mind-body health, and living longer."
+>
+  <!-- Header -->
+  <div class="bg-cream-dark border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 py-14">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Knowledge base</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark mb-4">
+        All Articles
+      </h1>
+      <p class="text-stone text-lg max-w-xl">
+        {sortedPosts.length} evidence-based articles on living well.
+      </p>
+
+      <!-- Category filter -->
+      <div class="flex flex-wrap gap-2 mt-8">
+        {categories.map(cat => {
+          const normalized = cat.toLowerCase().replace(' & ', '-');
+          const isActive = normalized === normalizedActive || (cat === 'All' && normalizedActive === 'all');
+          return (
+            <a
+              href={cat === 'All' ? '/blog' : `/blog?category=${normalized}`}
+              class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-sage text-cream'
+                  : 'bg-cream border border-border text-stone hover:border-sage-light hover:text-sage-dark'
+              }`}
+            >
+              {cat}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+
+  <!-- Articles grid -->
+  <div class="max-w-6xl mx-auto px-6 py-14">
+    {filteredPosts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredPosts.map(post => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            slug={post.id.replace(/\.mdx?$/, '')}
+            category={post.data.category}
+            pubDate={post.data.pubDate}
+            heroImage={post.data.heroImage}
+            readTime={post.data.readTime}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20">
+        <p class="font-heading text-2xl text-stone mb-3">No articles yet in this category</p>
+        <p class="text-stone-light mb-6">Check back soon — the pipeline is humming.</p>
+        <a href="/blog" class="text-sage-dark font-medium hover:text-sage transition-colors">
+          ← Browse all articles
+        </a>
+      </div>
+    )}
+  </div>
+</BaseLayout>
