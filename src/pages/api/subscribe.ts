@@ -5,7 +5,9 @@ import type { APIRoute } from 'astro';
 const PUBLICATION_ID = 'pub_1a8fae95-b89d-4826-93a8-37eb7b61449f';
 
 export const POST: APIRoute = async ({ request }) => {
-  const apiKey = import.meta.env.BEEHIIV_API_KEY;
+  // process.env works at runtime (Vercel deployment + local dev server)
+  // import.meta.env is a fallback for Vite dev mode
+  const apiKey = process.env.BEEHIIV_API_KEY ?? import.meta.env.BEEHIIV_API_KEY;
 
   if (!apiKey) {
     return new Response(JSON.stringify({ error: 'Newsletter service not configured.' }), {
