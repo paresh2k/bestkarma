@@ -2,7 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 
-const PUBLICATION_ID = '1a8fae95-b89d-4826-93a8-37eb7b61449f';
+const PUBLICATION_ID = 'pub_1a8fae95-b89d-4826-93a8-37eb7b61449f';
 
 export const POST: APIRoute = async ({ request }) => {
   const apiKey = import.meta.env.BEEHIIV_API_KEY;
