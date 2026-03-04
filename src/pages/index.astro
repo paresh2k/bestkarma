@@ -41,9 +41,9 @@ const topics = [
 ---
 
 <BaseLayout title="BestKarma — Live Well, Age Wisely, Thrive Daily">
-  <!-- Hero -->
-  <section class="relative overflow-hidden bg-cream pt-16 pb-20 md:pt-24 md:pb-28">
-    <!-- Decorative background shape -->
+
+  <!-- Hero — compact so articles peek below the fold -->
+  <section class="relative overflow-hidden bg-cream pt-10 pb-10 md:pt-14 md:pb-12">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-sage-light/15"></div>
       <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-gold-light/20"></div>
@@ -51,50 +51,79 @@ const topics = [
 
     <div class="relative max-w-6xl mx-auto px-6">
       <div class="max-w-3xl">
-        <div class="inline-flex items-center gap-2 bg-sage-light/30 text-sage-dark text-xs font-semibold px-4 py-2 rounded-full mb-8 tracking-wide">
+        <div class="inline-flex items-center gap-2 bg-sage-light/30 text-sage-dark text-xs font-semibold px-4 py-2 rounded-full mb-6 tracking-wide">
           <span class="w-1.5 h-1.5 rounded-full bg-sage-dark"></span>
           Science-backed wellness
         </div>
 
-        <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-semibold text-bark leading-tight mb-6">
+        <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-bark leading-tight mb-4">
           Live Well.<br />
           Age Wisely.<br />
           <span class="text-sage">Thrive Daily.</span>
         </h1>
 
-        <p class="text-stone text-xl md:text-2xl leading-relaxed mb-10 max-w-2xl">
+        <p class="text-stone text-lg md:text-xl leading-relaxed mb-7 max-w-2xl">
           Evidence-based insights on longevity, nutrition, sleep, and mindset — for people who want to live a long, vibrant life.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 items-start">
-          <a
-            href="/blog"
-            class="inline-flex items-center gap-2 bg-bark text-cream font-semibold px-7 py-4 rounded-full hover:bg-stone transition-colors text-base"
-          >
-            Explore Articles
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-            </svg>
-          </a>
-          <div>
-            <p class="text-stone-light text-sm mb-2">Weekly wellness digest</p>
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 bg-bark text-cream font-semibold px-7 py-3.5 rounded-full hover:bg-stone transition-colors text-base"
+        >
+          Explore Articles
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter — dedicated block with clear value props -->
+  <section class="bg-mist border-y border-sage-light/30 py-10 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-center gap-8 md:gap-16">
+
+        <!-- Left: what you get -->
+        <div class="flex-1 min-w-0">
+          <p class="text-sage-dark text-xs font-semibold uppercase tracking-widest mb-2">Free Weekly Newsletter</p>
+          <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark mb-4">
+            One insight. Every Sunday.<br class="hidden md:block" /> Backed by science.
+          </h2>
+          <ul class="space-y-2.5">
+            <li class="flex items-start gap-2.5 text-stone text-sm">
+              <svg class="w-4 h-4 mt-0.5 text-sage shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <span><strong class="text-bark font-medium">Evidence-based only</strong> — every claim cites peer-reviewed research, no fads or supplement hype</span>
+            </li>
+            <li class="flex items-start gap-2.5 text-stone text-sm">
+              <svg class="w-4 h-4 mt-0.5 text-sage shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <span><strong class="text-bark font-medium">Practical takeaways</strong> — science distilled into one thing you can act on this week</span>
+            </li>
+            <li class="flex items-start gap-2.5 text-stone text-sm">
+              <svg class="w-4 h-4 mt-0.5 text-sage shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <span><strong class="text-bark font-medium">Covers all 6 pillars</strong> — body, mind, sleep, nutrition, social health, and financial wellness</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: signup form -->
+        <div class="md:w-80 lg:w-96 shrink-0">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-border">
+            <p class="text-bark font-semibold text-base mb-1">Join free — no spam, ever.</p>
+            <p class="text-stone-light text-sm mb-4">Unsubscribe with one click, anytime.</p>
             <NewsletterSignup variant="hero" />
           </div>
         </div>
 
-        <!-- Social proof -->
-        <p class="mt-8 text-stone-light text-sm">
-          Join thousands learning to live better, longer.
-        </p>
       </div>
     </div>
   </section>
 
   <!-- Featured Articles -->
   {featuredPosts.length > 0 && (
-    <section class="py-20 px-6 bg-cream-dark/50">
+    <section class="py-16 px-6 bg-cream-dark/50">
       <div class="max-w-6xl mx-auto">
-        <div class="flex items-end justify-between mb-10">
+        <div class="flex items-end justify-between mb-8">
           <div>
             <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">Latest</p>
             <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">From the archive</h2>
@@ -167,7 +196,7 @@ const topics = [
     </div>
   </section>
 
-  <!-- Newsletter banner -->
+  <!-- Newsletter banner (bottom of page) -->
   <NewsletterSignup variant="banner" />
 
   <!-- About teaser -->
@@ -185,4 +214,5 @@ const topics = [
       </a>
     </div>
   </section>
+
 </BaseLayout>
