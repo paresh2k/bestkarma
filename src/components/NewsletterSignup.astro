@@ -1,13 +1,11 @@
 ---
 interface Props {
   variant?: 'hero' | 'inline' | 'banner';
-  beehiivId?: string;
 }
 
-const {
-  variant = 'inline',
-  beehiivId = '1a8fae95-b89d-4826-93a8-37eb7b61449f',
-} = Astro.props;
+const { variant = 'inline' } = Astro.props;
+
+const formId = `newsletter-${variant}-${Math.random().toString(36).slice(2, 7)}`;
 ---
 
 {variant === 'banner' ? (
@@ -22,10 +20,9 @@ const {
       </p>
 
       <form
-        action={`https://app.beehiiv.com/subscribe/${beehiivId}`}
-        method="POST"
-        target="_blank"
+        id={formId}
         class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+        novalidate
       >
         <input
           type="email"
@@ -36,23 +33,22 @@ const {
         />
         <button
           type="submit"
-          class="px-6 py-3.5 bg-cream text-sage-dark font-semibold rounded-full hover:bg-gold-light transition-colors text-sm whitespace-nowrap"
+          class="submit-btn px-6 py-3.5 bg-cream text-sage-dark font-semibold rounded-full hover:bg-gold-light transition-colors text-sm whitespace-nowrap disabled:opacity-60"
         >
           Join Free →
         </button>
       </form>
 
-      <p class="text-cream/40 text-xs mt-4">
-        No spam, ever. Unsubscribe anytime.
-      </p>
+      <p class="success-msg hidden text-cream font-medium mt-4">🎉 You're in! Check your inbox to confirm.</p>
+      <p class="error-msg hidden text-red-200 text-sm mt-4"></p>
+      <p class="text-cream/40 text-xs mt-4 no-msg">No spam, ever. Unsubscribe anytime.</p>
     </div>
   </section>
 ) : variant === 'hero' ? (
   <form
-    action={`https://app.beehiiv.com/subscribe/${beehiivId}`}
-    method="POST"
-    target="_blank"
+    id={formId}
     class="flex flex-col sm:flex-row gap-3 max-w-sm"
+    novalidate
   >
     <input
       type="email"
@@ -63,20 +59,21 @@ const {
     />
     <button
       type="submit"
-      class="px-6 py-3 bg-terracotta text-cream font-semibold rounded-full hover:bg-terracotta/90 transition-colors text-sm whitespace-nowrap"
+      class="submit-btn px-6 py-3 bg-terracotta text-cream font-semibold rounded-full hover:bg-terracotta/90 transition-colors text-sm whitespace-nowrap disabled:opacity-60"
     >
       Join Free
     </button>
+    <p class="success-msg hidden w-full text-sage-dark text-sm font-medium mt-1">🎉 Check your inbox to confirm!</p>
+    <p class="error-msg hidden w-full text-red-600 text-xs mt-1"></p>
   </form>
 ) : (
   <div class="bg-mist border border-sage-light/30 rounded-2xl p-8">
     <h3 class="font-heading text-2xl font-semibold text-bark mb-2">Stay in the loop</h3>
     <p class="text-stone text-sm mb-5">Weekly wellness insights, science-backed and human-curated.</p>
     <form
-      action={`https://app.beehiiv.com/subscribe/${beehiivId}`}
-      method="POST"
-      target="_blank"
+      id={formId}
       class="flex flex-col sm:flex-row gap-3"
+      novalidate
     >
       <input
         type="email"
@@ -87,11 +84,60 @@ const {
       />
       <button
         type="submit"
-        class="px-6 py-3 bg-sage text-cream font-medium rounded-full hover:bg-sage-dark transition-colors text-sm"
+        class="submit-btn px-6 py-3 bg-sage text-cream font-medium rounded-full hover:bg-sage-dark transition-colors text-sm disabled:opacity-60"
       >
         Subscribe
       </button>
     </form>
-    <p class="text-stone-light text-xs mt-3">Free, weekly, unsubscribe anytime.</p>
+    <p class="success-msg hidden text-sage-dark text-sm font-medium mt-3">🎉 You're in! Check your inbox to confirm.</p>
+    <p class="error-msg hidden text-red-600 text-xs mt-2"></p>
+    <p class="text-stone-light text-xs mt-3 no-msg">Free, weekly, unsubscribe anytime.</p>
   </div>
 )}
+
+<script define:vars={{ formId }}>
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  const btn = form.querySelector('.submit-btn');
+  const successMsg = form.closest('section, div, form')?.querySelector('.success-msg') ?? form.querySelector('.success-msg');
+  const errorMsg = form.closest('section, div, form')?.querySelector('.error-msg') ?? form.querySelector('.error-msg');
+  const noMsg = form.closest('section, div, form')?.querySelector('.no-msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.querySelector('input[type="email"]').value.trim();
+
+    btn.disabled = true;
+    btn.textContent = 'Subscribing…';
+    if (errorMsg) { errorMsg.classList.add('hidden'); errorMsg.textContent = ''; }
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        form.classList.add('hidden');
+        if (noMsg) noMsg.classList.add('hidden');
+        if (successMsg) successMsg.classList.remove('hidden');
+      } else {
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = btn.dataset.label ?? 'Subscribe';
+      if (errorMsg) {
+        errorMsg.textContent = err.message;
+        errorMsg.classList.remove('hidden');
+      }
+    }
+  });
+
+  // Store original label
+  if (btn) btn.dataset.label = btn.textContent.trim();
+</script>
