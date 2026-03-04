@@ -1,0 +1,60 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BestKarma logo">
+  <title>BestKarma</title>
+  <defs>
+    <!--
+      Single lotus petal pointing upward.
+      Base: y=148 (52px above centre 200,200)
+      Tip:  y=54  (146px above centre)
+      Narrowed bezier handles give an elegant teardrop shape.
+    -->
+    <path id="pk-petal"
+      d="M200,148 C186,148 166,106 200,54 C234,106 214,148 200,148Z"/>
+  </defs>
+
+  <!-- ── Layer 1: 4 diagonal petals (back, pale sage) ─────────────────── -->
+  <g fill="#D6E9D4">
+    <use href="#pk-petal" transform="rotate(45,200,200)"/>
+    <use href="#pk-petal" transform="rotate(135,200,200)"/>
+    <use href="#pk-petal" transform="rotate(225,200,200)"/>
+    <use href="#pk-petal" transform="rotate(315,200,200)"/>
+  </g>
+
+  <!-- ── Layer 2: 4 cardinal petals (front, medium sage) ───────────────── -->
+  <g fill="#A8C5A5">
+    <use href="#pk-petal"/>
+    <use href="#pk-petal" transform="rotate(90,200,200)"/>
+    <use href="#pk-petal" transform="rotate(180,200,200)"/>
+    <use href="#pk-petal" transform="rotate(270,200,200)"/>
+  </g>
+
+  <!-- ── Layer 3: centre cream disc + subtle ring ──────────────────────── -->
+  <circle cx="200" cy="200" r="66" fill="#FAF7F0"/>
+  <circle cx="200" cy="200" r="66" fill="none" stroke="#C5D9C3" stroke-width="1.5"/>
+
+  <!-- ── Layer 4: meditating figure (sage dark) ────────────────────────── -->
+
+  <!-- Head -->
+  <circle cx="200" cy="162" r="18" fill="#4A6741"/>
+
+  <!--
+    Body + legs in Padmasana (lotus seated pose).
+    The wide knee-spread creates the distinctive silhouette of cross-legged meditation.
+    Path traces: left neck → left torso → left knee out → left foot →
+                 centre bottom → right foot → right knee → right torso → right neck
+  -->
+  <path fill="#4A6741"
+    d="M194,180
+       C185,186 160,207 150,226
+       C144,241 155,252 174,255
+       C183,257 192,254 200,251
+       C208,254 217,257 226,255
+       C245,252 256,241 250,226
+       C240,207 215,186 206,180Z"/>
+
+  <!-- ── Layer 5: Ajna chakra / third-eye dot (terracotta) ─────────────── -->
+  <circle cx="200" cy="155" r="3.5" fill="#C47C5A"/>
+
+  <!-- ── Layer 6: hands in Chin Mudra (subtle cream circles at knees) ───── -->
+  <circle cx="157" cy="237" r="5.5" fill="#FAF7F0" opacity="0.55"/>
+  <circle cx="243" cy="237" r="5.5" fill="#FAF7F0" opacity="0.55"/>
+</svg>

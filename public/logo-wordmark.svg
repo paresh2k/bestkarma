@@ -1,0 +1,67 @@
+<svg viewBox="0 0 580 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BestKarma">
+  <title>BestKarma</title>
+  <defs>
+    <path id="wm-petal"
+      d="M80,59 C74.4,59 66.4,42.4 80,21.6 C93.6,42.4 85.6,59 80,59Z"/>
+  </defs>
+
+  <!-- === LOGO MARK (80×80 centred at 80,80) === -->
+
+  <!-- Diagonal petals (pale sage) -->
+  <g fill="#D6E9D4">
+    <use href="#wm-petal" transform="rotate(45,80,80)"/>
+    <use href="#wm-petal" transform="rotate(135,80,80)"/>
+    <use href="#wm-petal" transform="rotate(225,80,80)"/>
+    <use href="#wm-petal" transform="rotate(315,80,80)"/>
+  </g>
+
+  <!-- Cardinal petals (medium sage) -->
+  <g fill="#A8C5A5">
+    <use href="#wm-petal"/>
+    <use href="#wm-petal" transform="rotate(90,80,80)"/>
+    <use href="#wm-petal" transform="rotate(180,80,80)"/>
+    <use href="#wm-petal" transform="rotate(270,80,80)"/>
+  </g>
+
+  <!-- Centre disc -->
+  <circle cx="80" cy="80" r="26.4" fill="#FAF7F0"/>
+  <circle cx="80" cy="80" r="26.4" fill="none" stroke="#C5D9C3" stroke-width="0.8"/>
+
+  <!-- Head -->
+  <circle cx="80" cy="64.8" r="7.2" fill="#4A6741"/>
+
+  <!-- Body + padmasana legs -->
+  <path fill="#4A6741"
+    d="M77.6,72
+       C74,74.4 64,82.8 60,90.4
+       C57.6,96.4 62,100.8 69.6,102
+       C73.2,102.8 76.8,101.6 80,100.4
+       C83.2,101.6 86.8,102.8 90.4,102
+       C98,100.8 102.4,96.4 100,90.4
+       C96,82.8 86,74.4 82.4,72Z"/>
+
+  <!-- Ajna chakra dot -->
+  <circle cx="80" cy="62" r="1.4" fill="#C47C5A"/>
+
+  <!-- Chin mudra hands -->
+  <circle cx="62.8" cy="94.8" r="2.2" fill="#FAF7F0" opacity="0.55"/>
+  <circle cx="97.2" cy="94.8" r="2.2" fill="#FAF7F0" opacity="0.55"/>
+
+  <!-- === WORDMARK TEXT === -->
+  <text
+    x="174"
+    y="104"
+    font-family="Fraunces, Georgia, serif"
+    font-weight="500"
+    font-size="72"
+    letter-spacing="-1.5"
+    fill="#2D2016">Best</text>
+  <text
+    x="355"
+    y="104"
+    font-family="Fraunces, Georgia, serif"
+    font-weight="500"
+    font-size="72"
+    letter-spacing="-1.5"
+    fill="#7D9B76">Karma</text>
+</svg>
