@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="Learn what BestKarma is building: a calm, science-backed wellness publication focused on practical longevity."
+>
+  <section class="bg-cream-dark/60 border-b border-border">
+    <div class="max-w-4xl mx-auto px-6 py-16">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">About BestKarma</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark leading-tight">
+        Science-backed wellness for people who want the long game to feel livable.
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-stone">
+        BestKarma exists to translate credible wellness and longevity research into practical habits that fit ordinary life. The goal is not biohacker theater. It is clearer judgment, better routines, and healthier years.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-6 py-16">
+    <div class="grid gap-10 md:grid-cols-2">
+      <div class="rounded-2xl border border-border bg-cream-dark/50 p-8">
+        <h2 class="font-heading text-2xl font-semibold text-bark">What we cover</h2>
+        <p class="mt-4 text-stone leading-relaxed">
+          BestKarma focuses on the core systems that shape long-term health: longevity, nutrition, sleep, mind-body health, and sustainable daily routines.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-border bg-cream-dark/50 p-8">
+        <h2 class="font-heading text-2xl font-semibold text-bark">How we work</h2>
+        <p class="mt-4 text-stone leading-relaxed">
+          We research, draft, and validate content through a dedicated editorial workflow before it reaches the site. That process is designed to preserve nuance, cite evidence, and avoid hype.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 rounded-3xl bg-bark px-8 py-10 text-cream">
+      <h2 class="font-heading text-3xl font-semibold">What BestKarma is not</h2>
+      <p class="mt-4 max-w-2xl text-cream/75 leading-relaxed">
+        We are not a substitute for a doctor, a supplement marketplace, or a channel for miracle claims. When the evidence is mixed, the site should say so clearly.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-4 text-sm">
+        <a href="/editorial-standards" class="rounded-full bg-sage px-5 py-2.5 font-medium text-cream hover:bg-sage-dark transition-colors">Read our standards</a>
+        <a href="/blog" class="rounded-full border border-cream/20 px-5 py-2.5 font-medium text-cream hover:bg-cream/10 transition-colors">Browse articles</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

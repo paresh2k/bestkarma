@@ -1,0 +1,20 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#FAF7F0"/>
+  <circle cx="1012" cy="120" r="180" fill="#B5C9B3" fill-opacity="0.4"/>
+  <circle cx="176" cy="544" r="164" fill="#E8D5A3" fill-opacity="0.55"/>
+  <rect x="92" y="84" width="1016" height="462" rx="32" fill="#F0EBE0"/>
+  <path d="M170 400C170 330 208 250 292 250C361 250 405 301 405 368C405 436 360 495 294 495C217 495 170 436 170 400Z" fill="#7D9B76" fill-opacity="0.15"/>
+  <path d="M286 472C286 472 214 416 214 337C214 282 248 242 290 242C338 242 369 279 369 334C369 416 286 472 286 472Z" fill="#7D9B76"/>
+  <path d="M286 344C286 344 239 307 221 252C213 227 227 212 250 222C270 231 286 273 286 344Z" fill="#4A6741"/>
+  <path d="M286 344C286 344 331 307 350 252C357 227 343 212 322 222C302 231 286 273 286 344Z" fill="#4A6741" fill-opacity="0.75"/>
+  <path d="M286 344V472" stroke="#7D9B76" stroke-width="6"/>
+  <text x="470" y="260" fill="#2D2016" font-family="Georgia, serif" font-size="76" font-weight="700">
+    Best<tspan fill="#7D9B76">Karma</tspan>
+  </text>
+  <text x="470" y="338" fill="#2D2016" font-family="Georgia, serif" font-size="42">
+    Science-backed wellness
+  </text>
+  <text x="470" y="390" fill="#6B5B45" font-family="Arial, sans-serif" font-size="30">
+    Live well. Age wisely. Thrive daily.
+  </text>
+</svg>
