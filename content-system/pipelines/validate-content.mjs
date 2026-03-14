@@ -121,7 +121,7 @@ async function validateDirectory(bucketName, dirPath, requireBundles) {
 
 const tasks = [];
 if (mode === 'all' || mode === 'published') {
-  tasks.push(validateDirectory('published', publishedDir, false));
+  tasks.push(validateDirectory('published', publishedDir, true));
 }
 if (mode === 'all' || mode === 'validated') {
   tasks.push(validateDirectory('validated', validatedDir, true));

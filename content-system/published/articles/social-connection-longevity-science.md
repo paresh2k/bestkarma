@@ -8,6 +8,9 @@ tags: [social-health, loneliness, connection, longevity, community, social]
 readTime: 8
 featured: false
 status: published
+author: bestkarma-editorial
+reviewer: bestkarma-review
+reviewedDate: 2026-03-14
 ---
 
 In 2023, the United States Surgeon General Dr. Vivek Murthy declared loneliness a public health epidemic. Not a social problem, not a cultural malaise — a **medical emergency**. The advisory cited sobering data: approximately half of American adults report measurable loneliness, and the health consequences rival those of smoking, obesity, and physical inactivity.

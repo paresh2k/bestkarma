@@ -1,0 +1,24 @@
+{
+  "bestkarma-editorial": {
+    "name": "BestKarma Editorial",
+    "role": "Editorial Team",
+    "credentials": "Research-led health and wellness editorial desk",
+    "bio": "BestKarma Editorial translates wellness and longevity research into practical guidance designed for real-world routines.",
+    "expertise": [
+      "wellness writing",
+      "longevity research synthesis",
+      "editorial strategy"
+    ]
+  },
+  "bestkarma-review": {
+    "name": "BestKarma Review Desk",
+    "role": "Review Team",
+    "credentials": "Evidence review and content QA",
+    "bio": "The BestKarma Review Desk checks health claims for source quality, nuance, and alignment with editorial standards before publication.",
+    "expertise": [
+      "source review",
+      "health content QA",
+      "editorial standards"
+    ]
+  }
+}

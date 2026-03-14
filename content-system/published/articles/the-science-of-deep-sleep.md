@@ -8,6 +8,9 @@ tags: [sleep, longevity, recovery, circadian-rhythm, health]
 readTime: 7
 featured: true
 status: published
+author: bestkarma-editorial
+reviewer: bestkarma-review
+reviewedDate: 2026-03-14
 ---
 
 You've probably heard the advice: get 7–9 hours of sleep. And while that's a reasonable guideline, it misses something critical. **Sleep is not a uniform block of time.** It's a complex architectural process — and the *structure* of your sleep matters as much as the duration.

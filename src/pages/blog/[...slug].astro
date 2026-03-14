@@ -15,9 +15,13 @@ const { Content } = await render(post);
 ---
 
 <ArticleLayout
+  slug={post.id.replace(/\.mdx?$/, '')}
   title={post.data.title}
   description={post.data.description}
+  author={post.data.author}
+  reviewer={post.data.reviewer}
   pubDate={post.data.pubDate}
+  reviewedDate={post.data.reviewedDate}
   updatedDate={post.data.updatedDate}
   heroImage={post.data.heroImage}
   category={post.data.category}

@@ -8,6 +8,9 @@ tags: [inflammation, inflammaging, longevity, diet, lifestyle, body, chronic-dis
 readTime: 9
 featured: true
 status: published
+author: bestkarma-editorial
+reviewer: bestkarma-review
+reviewedDate: 2026-03-14
 ---
 
 In 2000, Italian gerontologist Claudio Franceschi published a paper in the *Annals of the New York Academy of Sciences* that introduced a word that would reshape how geroscientists — researchers who study the biology of aging — think about disease.[^1]

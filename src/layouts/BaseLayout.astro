@@ -19,6 +19,14 @@ const {
 
 const siteName = 'BestKarma';
 const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'BestKarma',
+  url: Astro.site ?? Astro.url.origin,
+  logo: new URL('/logo-wordmark.svg', Astro.site ?? Astro.url).toString(),
+  description,
+};
 ---
 
 <!doctype html>
@@ -49,6 +57,8 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+    <slot name="head" />
 
     <!-- Google Fonts: Fraunces + Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -8,6 +8,9 @@ tags: [gratitude, mental-health, wellbeing, longevity, soul, inflammation, happi
 readTime: 7
 featured: false
 status: published
+author: bestkarma-editorial
+reviewer: bestkarma-review
+reviewedDate: 2026-03-14
 ---
 
 Gratitude has a credibility problem. Wrapped in inspirational-poster aesthetics and self-help rhetoric, it sounds like wishful thinking dressed in pseudoscience.

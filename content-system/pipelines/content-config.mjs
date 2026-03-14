@@ -29,7 +29,10 @@ export const allowedStatuses = new Set([
 export const requiredFrontmatterFields = [
   'title',
   'description',
+  'author',
+  'reviewer',
   'pubDate',
+  'reviewedDate',
   'category',
   'tags',
   'readTime',

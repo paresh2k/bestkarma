@@ -8,7 +8,10 @@
     "slug",
     "title",
     "description",
+    "author",
+    "reviewer",
     "pubDate",
+    "reviewedDate",
     "category",
     "tags",
     "status"
@@ -26,7 +29,19 @@
       "type": "string",
       "minLength": 30
     },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
     "pubDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "reviewedDate": {
       "type": "string",
       "format": "date"
     },

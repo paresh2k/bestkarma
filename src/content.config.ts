@@ -11,7 +11,10 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    author: z.string(),
+    reviewer: z.string(),
     pubDate: z.coerce.date(),
+    reviewedDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
     category: z.enum(['longevity', 'nutrition', 'sleep', 'wellness', 'mind-body']),
