@@ -12,6 +12,26 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts
+  .filter((candidate) => candidate.id !== post.id)
+  .map((candidate) => {
+    const sharedTags = candidate.data.tags.filter((tag) => post.data.tags.includes(tag)).length;
+    const sameCategory = candidate.data.category === post.data.category ? 1 : 0;
+    return { candidate, score: sharedTags * 2 + sameCategory };
+  })
+  .filter((item) => item.score > 0)
+  .sort((a, b) => b.score - a.score || b.candidate.data.pubDate.valueOf() - a.candidate.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map(({ candidate }) => ({
+    title: candidate.data.title,
+    description: candidate.data.description,
+    slug: candidate.id.replace(/\.mdx?$/, ''),
+    category: candidate.data.category,
+    pubDate: candidate.data.pubDate,
+    heroImage: candidate.data.heroImage,
+    readTime: candidate.data.readTime,
+  }));
 ---
 
 <ArticleLayout
@@ -27,6 +47,7 @@ const { Content } = await render(post);
   category={post.data.category}
   tags={post.data.tags}
   readTime={post.data.readTime}
+  relatedPosts={relatedPosts}
 >
   <Content />
 </ArticleLayout>

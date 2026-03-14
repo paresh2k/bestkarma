@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const tags = Array.from(new Set(allPosts.flatMap((post) => post.data.tags))).sort();
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const tagSet = new Set(posts.flatMap((post) => post.data.tags));
+  return Array.from(tagSet).map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const taggedPosts = allPosts
+  .filter((post) => post.data.tags.includes(tag ?? ''))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`#${tag}`}
+  description={`Browse BestKarma articles tagged #${tag}.`}
+>
+  <section class="bg-cream-dark/60 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Tag Archive</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark">#{tag}</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-stone">
+        {taggedPosts.length} article{taggedPosts.length === 1 ? '' : 's'} connected to this idea.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 py-14">
+    {taggedPosts.length > 0 ? (
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {taggedPosts.map((post) => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            slug={post.id.replace(/\.mdx?$/, '')}
+            category={post.data.category}
+            pubDate={post.data.pubDate}
+            heroImage={post.data.heroImage}
+            readTime={post.data.readTime}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="rounded-3xl border border-border bg-white/70 px-8 py-14 text-center">
+        <h2 class="font-heading text-3xl text-bark">No published articles yet</h2>
+        <p class="mt-4 text-stone leading-relaxed">
+          This tag archive is ready for future content as the editorial library expands.
+        </p>
+      </div>
+    )}
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 pb-16">
+    <div class="rounded-3xl border border-border bg-mist px-8 py-8">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Explore more tags</p>
+      <div class="flex flex-wrap gap-3">
+        {tags.map((entry) => (
+          <a href={`/tags/${entry}`} class={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${entry === tag ? 'bg-sage text-cream' : 'bg-white text-stone hover:text-sage-dark hover:border-sage-light border border-border'}`}>
+            #{entry}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
