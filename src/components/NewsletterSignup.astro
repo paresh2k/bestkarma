@@ -1,9 +1,10 @@
 ---
 interface Props {
   variant?: 'hero' | 'inline' | 'banner';
+  source?: string;
 }
 
-const { variant = 'inline' } = Astro.props;
+const { variant = 'inline', source = 'website' } = Astro.props;
 
 const formId = `newsletter-${variant}-${Math.random().toString(36).slice(2, 7)}`;
 ---
@@ -95,7 +96,7 @@ const formId = `newsletter-${variant}-${Math.random().toString(36).slice(2, 7)}`
   </div>
 )}
 
-<script define:vars={{ formId }}>
+<script define:vars={{ formId, source }}>
   const form = document.getElementById(formId);
   if (!form) return;
 
@@ -116,7 +117,7 @@ const formId = `newsletter-${variant}-${Math.random().toString(36).slice(2, 7)}`
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, source }),
       });
 
       const data = await res.json();

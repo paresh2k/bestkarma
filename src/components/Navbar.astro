@@ -37,7 +37,7 @@ const navLinks = categories.map(({ label, href }) => ({ label, href }));
         Articles
       </a>
       <a
-        href="/#newsletter"
+        href="/newsletter"
         class="inline-flex items-center gap-2 bg-sage text-cream text-base font-medium px-6 py-3 rounded-full hover:bg-sage-dark transition-colors"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -81,6 +81,11 @@ const navLinks = categories.map(({ label, href }) => ({ label, href }));
         </li>
       ))}
       <li class="pt-3 border-t border-border">
+        <a href="/newsletter" class="block text-stone hover:text-bark font-medium py-2 text-lg transition-colors">
+          Newsletter
+        </a>
+      </li>
+      <li>
         <a href="/blog" class="block text-stone hover:text-bark font-medium py-2 text-lg transition-colors">
           All Articles
         </a>

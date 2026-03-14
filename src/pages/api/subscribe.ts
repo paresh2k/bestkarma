@@ -17,9 +17,11 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   let email: string;
+  let source = 'website';
   try {
     const body = await request.json();
     email = body.email?.trim();
+    source = body.source?.trim() || source;
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid request.' }), {
       status: 400,
@@ -46,7 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
         email,
         reactivate_existing: false,
         send_welcome_email: true,
-        utm_source: 'bestkarma-website',
+        utm_source: source.replace(/[^a-z0-9-_]/gi, '-').toLowerCase(),
       }),
     }
   );
