@@ -14,10 +14,11 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
-    category: z.string(),
+    category: z.enum(['longevity', 'nutrition', 'sleep', 'wellness', 'mind-body']),
     tags: z.array(z.string()).default([]),
     readTime: z.number().optional(),
     featured: z.boolean().default(false),
+    status: z.enum(['briefed', 'researched', 'drafted', 'validated', 'approved', 'published']),
   }),
 });
 

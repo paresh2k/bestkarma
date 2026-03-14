@@ -1,12 +1,7 @@
 ---
-const navLinks = [
-  { label: 'Wellness', href: '/blog?category=wellness' },
-  { label: 'Longevity', href: '/blog?category=longevity' },
-  { label: 'Nutrition', href: '/blog?category=nutrition' },
-  { label: 'Mind & Body', href: '/blog?category=mind-body' },
-];
+import { categories } from '../lib/categories';
 
-const currentPath = Astro.url.pathname;
+const navLinks = categories.map(({ label, href }) => ({ label, href }));
 ---
 
 <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur-sm border-b border-border">

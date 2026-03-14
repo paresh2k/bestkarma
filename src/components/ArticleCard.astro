@@ -1,4 +1,6 @@
 ---
+import { getCategory } from '../lib/categories';
+
 interface Props {
   title: string;
   description: string;
@@ -27,15 +29,9 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   day: 'numeric',
 });
 
-const categoryColors: Record<string, string> = {
-  wellness: 'bg-sage-light/40 text-sage-dark',
-  longevity: 'bg-gold-light/60 text-stone',
-  nutrition: 'bg-terracotta-light/30 text-terracotta',
-  sleep: 'bg-mist text-sage-dark',
-  'mind-body': 'bg-cream-dark text-stone',
-};
-
-const colorClass = categoryColors[category.toLowerCase()] ?? 'bg-mist text-stone';
+const categoryMeta = getCategory(category.toLowerCase());
+const colorClass = categoryMeta?.colorClass ?? 'bg-mist text-stone';
+const categoryLabel = categoryMeta?.label ?? category;
 ---
 
 <article class={`group flex flex-col bg-cream-dark rounded-2xl overflow-hidden border border-border hover:border-sage-light hover:shadow-lg transition-all duration-300 ${featured ? 'md:flex-row md:col-span-2' : ''}`}>
@@ -66,7 +62,7 @@ const colorClass = categoryColors[category.toLowerCase()] ?? 'bg-mist text-stone
     <!-- Category + meta -->
     <div class="flex items-center gap-3 mb-3">
       <span class={`text-xs font-semibold px-3 py-1 rounded-full capitalize ${colorClass}`}>
-        {category}
+        {categoryLabel}
       </span>
       <span class="text-stone-light text-xs">{readTime} min read</span>
     </div>

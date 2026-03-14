@@ -2,11 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
+import { categories } from '../../lib/categories';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const categories = ['All', 'Longevity', 'Nutrition', 'Sleep', 'Wellness', 'Mind & Body'];
 
 // Get active category from URL
 const activeCategory = Astro.url.searchParams.get('category') ?? 'all';
@@ -34,19 +33,18 @@ const filteredPosts = normalizedActive === 'all'
 
       <!-- Category filter -->
       <div class="flex flex-wrap gap-2 mt-8">
-        {categories.map(cat => {
-          const normalized = cat.toLowerCase().replace(' & ', '-');
-          const isActive = normalized === normalizedActive || (cat === 'All' && normalizedActive === 'all');
+        {[{ label: 'All', blogHref: '/blog', slug: 'all' }, ...categories].map(cat => {
+          const isActive = cat.slug === normalizedActive || (cat.slug === 'all' && normalizedActive === 'all');
           return (
             <a
-              href={cat === 'All' ? '/blog' : `/blog?category=${normalized}`}
+              href={cat.blogHref}
               class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 isActive
                   ? 'bg-sage text-cream'
                   : 'bg-cream border border-border text-stone hover:border-sage-light hover:text-sage-dark'
               }`}
             >
-              {cat}
+              {cat.label}
             </a>
           );
         })}
