@@ -7,6 +7,7 @@ category: wellness
 tags: [financial-wellness, stress, cortisol, mental-health, financial, longevity, inflammation]
 readTime: 7
 featured: false
+status: published
 ---
 
 For decades, the conversation about financial health and physical health ran in parallel but rarely intersected. Personal finance advisers talked about emergency funds; doctors talked about cholesterol. The research of the last 20 years has collapsed that division.

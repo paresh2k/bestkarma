@@ -7,6 +7,7 @@ category: mind-body
 tags: [meditation, mindfulness, neuroscience, neuroplasticity, mental-health, mind, mbsr]
 readTime: 8
 featured: false
+status: published
 ---
 
 Until the early 2000s, the prevailing view in neuroscience was that the adult brain was largely fixed — its structure determined by genetics and early development, its decline thereafter inevitable. Meditation was considered a spiritual practice, not a medical one.

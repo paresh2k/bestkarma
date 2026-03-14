@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "content:validate": "node ./content-system/pipelines/validate-content.mjs",
+    "content:promote": "node ./content-system/pipelines/promote-article.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^9.0.4",

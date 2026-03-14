@@ -7,6 +7,7 @@ category: wellness
 tags: [cold-exposure, cold-shower, ice-bath, norepinephrine, dopamine, body, metabolism, recovery]
 readTime: 7
 featured: false
+status: published
 ---
 
 Cold exposure has ancient roots — Scandinavian sauna culture, Ayurvedic practices, Roman bathing rituals — but it's now drawing serious scientific scrutiny. Stripped of the bravado and the ice-bucket influencer content, what does the research actually support?

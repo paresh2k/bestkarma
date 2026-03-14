@@ -7,6 +7,7 @@ category: longevity
 tags: [ikigai, purpose, longevity, mental-health, soul, blue-zones]
 readTime: 8
 featured: false
+status: published
 ---
 
 In Okinawa, Japan — one of the original Blue Zones where people routinely live past 100 — there is no word for retirement. The concept doesn't translate, because the concept doesn't quite exist. Okinawans don't stop; they simply keep doing what gives their life meaning. They call it **ikigai**: the reason you get up in the morning.

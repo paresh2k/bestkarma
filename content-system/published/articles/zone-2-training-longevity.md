@@ -7,6 +7,7 @@ category: longevity
 tags: [zone-2, cardio, longevity, vo2max, mitochondria, exercise, body]
 readTime: 9
 featured: false
+status: published
 ---
 
 Most of us exercise too hard or not hard enough. The cardio zone that actually confers the greatest long-term metabolic and cardiovascular benefit is the one that feels almost embarrassingly easy: Zone 2.

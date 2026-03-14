@@ -7,6 +7,7 @@ category: nutrition
 tags: [gut-health, microbiome, nutrition, mental-health, inflammation]
 readTime: 8
 featured: false
+status: published
 ---
 
 There's an organ you probably don't think of as a brain — but it has more neurons than your spinal cord, produces most of your serotonin, and sends more signals to your brain than your brain sends to it.

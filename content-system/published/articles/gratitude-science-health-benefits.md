@@ -7,6 +7,7 @@ category: mind-body
 tags: [gratitude, mental-health, wellbeing, longevity, soul, inflammation, happiness]
 readTime: 7
 featured: false
+status: published
 ---
 
 Gratitude has a credibility problem. Wrapped in inspirational-poster aesthetics and self-help rhetoric, it sounds like wishful thinking dressed in pseudoscience.

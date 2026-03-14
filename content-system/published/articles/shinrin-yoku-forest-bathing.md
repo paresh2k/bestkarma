@@ -7,6 +7,7 @@ category: mind-body
 tags: [forest-bathing, shinrin-yoku, nature, stress, cortisol, immunity, spirit, nature-therapy]
 readTime: 7
 featured: false
+status: published
 ---
 
 In 1982, Japan's Ministry of Agriculture, Forestry and Fisheries coined the term **shinrin-yoku** — 森林浴 — literally "forest bathing" or "taking in the forest atmosphere." It wasn't simply poetry. It was the beginning of a public health initiative, backed by a formal scientific research program, that would spend three decades documenting what forest environments do to the human body.

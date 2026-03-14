@@ -7,6 +7,7 @@ category: longevity
 tags: [strength-training, muscle, longevity, sarcopenia, body, aging, healthspan, metabolism]
 readTime: 8
 featured: false
+status: published
 ---
 
 The human body begins losing muscle mass in the mid-thirties, accelerating after 40. By 80, the average sedentary adult has lost **30–40% of their peak muscle mass** — a condition called **sarcopenia** — along with proportional losses in strength, bone density, metabolic rate, and functional independence.
