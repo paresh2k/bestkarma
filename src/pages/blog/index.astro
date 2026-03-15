@@ -6,6 +6,7 @@ import { categories } from '../../lib/categories';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
 ---
 
 <BaseLayout
@@ -16,11 +17,9 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
   <div class="bg-cream-dark border-b border-border">
     <div class="max-w-6xl mx-auto px-6 py-14">
       <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Knowledge base</p>
-      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark mb-4">
-        All Articles
-      </h1>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark mb-4">All Articles</h1>
       <p class="text-stone text-lg max-w-xl">
-        {sortedPosts.length} evidence-based articles on living well.
+        <span id="result-count">{sortedPosts.length}</span> evidence-based articles on living well.
       </p>
 
       <!-- Category filter -->
@@ -45,7 +44,7 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
   <div class="max-w-6xl mx-auto px-6 py-14">
     <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {sortedPosts.map(post => (
-        <div data-category={post.data.category}>
+        <div data-category={post.data.category} class="article-card">
           <ArticleCard
             title={post.data.title}
             description={post.data.description}
@@ -58,22 +57,119 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
         </div>
       ))}
     </div>
+
     <p id="no-results" class="hidden text-center py-20 font-heading text-2xl text-stone">
       No articles yet in this category.
     </p>
+
+    <!-- Pagination controls -->
+    <div id="pagination" class="mt-12 flex items-center justify-center gap-2 flex-wrap"></div>
   </div>
 </BaseLayout>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cards = document.querySelectorAll<HTMLElement>('#articles-grid [data-category]');
-  const noResults = document.getElementById('no-results');
+  const PAGE_SIZE = 12;
+  const allCards = Array.from(document.querySelectorAll<HTMLElement>('.article-card'));
+  const buttons  = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const grid     = document.getElementById('articles-grid');
+  const noResults   = document.getElementById('no-results');
+  const pagination  = document.getElementById('pagination');
+  const resultCount = document.getElementById('result-count');
 
+  let activeFilter = 'all';
+  let currentPage  = 1;
+
+  function filteredCards() {
+    return activeFilter === 'all'
+      ? allCards
+      : allCards.filter(c => c.dataset.category === activeFilter);
+  }
+
+  function render() {
+    const filtered  = filteredCards();
+    const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+    currentPage = Math.min(currentPage, totalPages || 1);
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end   = start + PAGE_SIZE;
+
+    // Show/hide cards
+    allCards.forEach(card => { card.style.display = 'none'; });
+    const pageCards = filtered.slice(start, end);
+    pageCards.forEach(card => { card.style.display = ''; });
+
+    // Result count
+    if (resultCount) resultCount.textContent = String(filtered.length);
+
+    // No results
+    noResults?.classList.toggle('hidden', filtered.length > 0);
+    if (grid) grid.style.display = filtered.length > 0 ? '' : 'none';
+
+    // Pagination
+    renderPagination(totalPages);
+
+    // Scroll to top of grid on page change (skip on initial render)
+    if (currentPage > 1) {
+      grid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function renderPagination(totalPages) {
+    if (!pagination) return;
+    pagination.innerHTML = '';
+    if (totalPages <= 1) return;
+
+    const btnClass = 'w-9 h-9 rounded-full text-sm font-medium transition-colors flex items-center justify-center';
+    const activeClass = 'bg-sage text-cream';
+    const inactiveClass = 'border border-border text-stone hover:border-sage-light hover:text-sage-dark bg-cream';
+
+    // Prev
+    const prev = document.createElement('button');
+    prev.textContent = '←';
+    prev.className = `${btnClass} ${currentPage === 1 ? 'opacity-30 cursor-not-allowed border border-border text-stone' : inactiveClass}`;
+    prev.disabled = currentPage === 1;
+    prev.addEventListener('click', () => { currentPage--; render(); });
+    pagination.appendChild(prev);
+
+    // Page numbers — show max 5 around current
+    const pageNums = getPageRange(currentPage, totalPages);
+    pageNums.forEach(p => {
+      if (p === '...') {
+        const ellipsis = document.createElement('span');
+        ellipsis.textContent = '…';
+        ellipsis.className = 'w-9 h-9 flex items-center justify-center text-stone text-sm';
+        pagination.appendChild(ellipsis);
+        return;
+      }
+      const btn = document.createElement('button');
+      btn.textContent = String(p);
+      btn.className = `${btnClass} ${p === currentPage ? activeClass : inactiveClass}`;
+      btn.addEventListener('click', () => { currentPage = p; render(); });
+      pagination.appendChild(btn);
+    });
+
+    // Next
+    const next = document.createElement('button');
+    next.textContent = '→';
+    next.className = `${btnClass} ${currentPage === totalPages ? 'opacity-30 cursor-not-allowed border border-border text-stone' : inactiveClass}`;
+    next.disabled = currentPage === totalPages;
+    next.addEventListener('click', () => { currentPage++; render(); });
+    pagination.appendChild(next);
+  }
+
+  function getPageRange(current, total) {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    if (current <= 4) return [1, 2, 3, 4, 5, '...', total];
+    if (current >= total - 3) return [1, '...', total-4, total-3, total-2, total-1, total];
+    return [1, '...', current-1, current, current+1, '...', total];
+  }
+
+  // Filter button clicks
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter ?? 'all';
+      activeFilter = btn.dataset.filter ?? 'all';
+      currentPage  = 1;
 
-      // Update active button styles
       buttons.forEach(b => {
         b.classList.remove('bg-sage', 'text-cream');
         b.classList.add('bg-cream', 'border', 'border-border', 'text-stone');
@@ -81,15 +177,10 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
       btn.classList.add('bg-sage', 'text-cream');
       btn.classList.remove('bg-cream', 'border', 'border-border', 'text-stone');
 
-      // Show/hide cards
-      let visible = 0;
-      cards.forEach(card => {
-        const match = filter === 'all' || card.dataset.category === filter;
-        card.style.display = match ? '' : 'none';
-        if (match) visible++;
-      });
-
-      noResults?.classList.toggle('hidden', visible > 0);
+      render();
     });
   });
+
+  // Initial render
+  render();
 </script>
