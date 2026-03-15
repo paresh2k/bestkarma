@@ -1,0 +1,44 @@
+---
+import { pageUrl, pageRange } from '../lib/pagination';
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+const pages = pageRange(currentPage, totalPages);
+
+const btnBase = 'w-9 h-9 rounded-full text-sm font-medium transition-colors flex items-center justify-center';
+const active  = 'bg-sage text-cream';
+const inactive = 'bg-cream border border-border text-stone hover:border-sage-light hover:text-sage-dark';
+const disabled = 'bg-cream border border-border text-stone opacity-30 cursor-not-allowed pointer-events-none';
+---
+
+{totalPages > 1 && (
+  <nav class="flex items-center justify-center gap-2 flex-wrap mt-12" aria-label="Pagination">
+
+    <!-- Prev -->
+    {currentPage > 1
+      ? <a href={pageUrl(baseUrl, currentPage - 1)} class={`${btnBase} ${inactive}`} aria-label="Previous page">←</a>
+      : <span class={`${btnBase} ${disabled}`} aria-hidden="true">←</span>
+    }
+
+    <!-- Page numbers -->
+    {pages.map(p =>
+      p === '...'
+        ? <span class="w-9 h-9 flex items-center justify-center text-stone text-sm select-none">…</span>
+        : p === currentPage
+          ? <span class={`${btnBase} ${active}`} aria-current="page">{p}</span>
+          : <a href={pageUrl(baseUrl, p)} class={`${btnBase} ${inactive}`}>{p}</a>
+    )}
+
+    <!-- Next -->
+    {currentPage < totalPages
+      ? <a href={pageUrl(baseUrl, currentPage + 1)} class={`${btnBase} ${inactive}`} aria-label="Next page">→</a>
+      : <span class={`${btnBase} ${disabled}`} aria-hidden="true">→</span>
+    }
+
+  </nav>
+)}

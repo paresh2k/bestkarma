@@ -1,28 +1,40 @@
 ---
 export const prerender = true;
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
-import BlogFilters from '../../components/BlogFilters.astro';
-import Pagination from '../../components/Pagination.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import BlogFilters from '../../../components/BlogFilters.astro';
+import Pagination from '../../../components/Pagination.astro';
 import { getCollection } from 'astro:content';
-import { paginate } from '../../lib/pagination';
+import { paginate, PAGE_SIZE } from '../../../lib/pagination';
 
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const sorted = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+
+  // Page 1 is handled by /blog/index.astro — generate pages 2, 3, …
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
+    params: { n: String(i + 2) },
+  }));
+}
+
+const pageNum = Number(Astro.params.n);
 const allPosts = await getCollection('blog');
 const sorted   = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const page     = paginate(sorted, 1, '/blog');
+const page     = paginate(sorted, pageNum, '/blog');
 ---
 
 <BaseLayout
-  title="Articles — BestKarma"
-  description="Browse all wellness and longevity articles from BestKarma. Science-backed insights on nutrition, sleep, mind-body health, and living longer."
+  title={`Articles — Page ${pageNum} — BestKarma`}
+  description={`Browse all wellness and longevity articles from BestKarma — page ${pageNum}.`}
 >
   <div class="bg-cream-dark border-b border-border">
     <div class="max-w-6xl mx-auto px-6 py-14">
       <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Knowledge base</p>
       <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark mb-4">All Articles</h1>
       <p class="text-stone text-lg max-w-xl">
-        {page.totalItems} evidence-based articles on living well.
+        {page.totalItems} evidence-based articles — page {pageNum} of {page.totalPages}.
       </p>
       <BlogFilters activeFilter="all" />
     </div>
@@ -42,6 +54,6 @@ const page     = paginate(sorted, 1, '/blog');
         />
       ))}
     </div>
-    <Pagination currentPage={1} totalPages={page.totalPages} baseUrl="/blog" />
+    <Pagination currentPage={pageNum} totalPages={page.totalPages} baseUrl="/blog" />
   </div>
 </BaseLayout>

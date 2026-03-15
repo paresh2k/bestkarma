@@ -1,0 +1,73 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../../../components/ArticleCard.astro';
+import BlogFilters from '../../../../../components/BlogFilters.astro';
+import Pagination from '../../../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../../../../../lib/categories';
+import { paginate, PAGE_SIZE } from '../../../../../lib/pagination';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const paths: { params: { category: string; n: string } }[] = [];
+
+  for (const cat of categories) {
+    const posts = allPosts
+      .filter(p => p.data.category === cat.slug)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+    // Page 1 is handled by /blog/topic/[category]/index.astro
+    for (let i = 2; i <= totalPages; i++) {
+      paths.push({ params: { category: cat.slug, n: String(i) } });
+    }
+  }
+  return paths;
+}
+
+const { category, n } = Astro.params;
+const pageNum = Number(n);
+const cat     = categories.find(c => c.slug === category)!;
+const allPosts = await getCollection('blog');
+const posts    = allPosts
+  .filter(p => p.data.category === category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const baseUrl = `/blog/topic/${category}`;
+const page    = paginate(posts, pageNum, baseUrl);
+---
+
+<BaseLayout
+  title={`${cat.label} — Page ${pageNum} — BestKarma`}
+  description={`Browse ${cat.label.toLowerCase()} articles from BestKarma — page ${pageNum}.`}
+>
+  <div class="bg-cream-dark border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 py-14">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Knowledge base</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark mb-4">{cat.label}</h1>
+      <p class="text-stone text-lg max-w-xl">
+        {page.totalItems} {page.totalItems === 1 ? 'article' : 'articles'} — page {pageNum} of {page.totalPages}.
+      </p>
+      <BlogFilters activeFilter={category} />
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-14">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {page.items.map(post => (
+        <ArticleCard
+          title={post.data.title}
+          description={post.data.description}
+          slug={post.id.replace(/\.mdx?$/, '')}
+          category={post.data.category}
+          pubDate={post.data.pubDate}
+          heroImage={post.data.heroImage}
+          readTime={post.data.readTime}
+        />
+      ))}
+    </div>
+    <Pagination currentPage={pageNum} totalPages={page.totalPages} baseUrl={baseUrl} />
+  </div>
+</BaseLayout>

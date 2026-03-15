@@ -1,0 +1,66 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../../components/ArticleCard.astro';
+import BlogFilters from '../../../../components/BlogFilters.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../../../../lib/categories';
+import { paginate } from '../../../../lib/pagination';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return categories.map(cat => {
+    const posts = allPosts
+      .filter(p => p.data.category === cat.slug)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    return { params: { category: cat.slug }, props: { cat, posts } };
+  });
+}
+
+const { cat, posts } = Astro.props;
+const baseUrl = `/blog/topic/${cat.slug}`;
+const page    = paginate(posts, 1, baseUrl);
+---
+
+<BaseLayout
+  title={`${cat.label} Articles — BestKarma`}
+  description={`Browse all ${cat.label.toLowerCase()} articles from BestKarma. ${cat.description}`}
+>
+  <div class="bg-cream-dark border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 py-14">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Knowledge base</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark mb-4">{cat.label}</h1>
+      <p class="text-stone text-lg max-w-xl">
+        {page.totalItems} {page.totalItems === 1 ? 'article' : 'articles'} on {cat.label.toLowerCase()}.
+      </p>
+      <BlogFilters activeFilter={cat.slug} />
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-14">
+    {page.items.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {page.items.map(post => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            slug={post.id.replace(/\.mdx?$/, '')}
+            category={post.data.category}
+            pubDate={post.data.pubDate}
+            heroImage={post.data.heroImage}
+            readTime={post.data.readTime}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20">
+        <p class="font-heading text-2xl text-stone mb-3">No articles yet in {cat.label}.</p>
+        <p class="text-stone/60 mb-6">Check back soon — the pipeline is humming.</p>
+        <a href="/blog" class="text-sage-dark font-medium hover:text-sage transition-colors">← Browse all articles</a>
+      </div>
+    )}
+    <Pagination currentPage={1} totalPages={page.totalPages} baseUrl={baseUrl} />
+  </div>
+</BaseLayout>

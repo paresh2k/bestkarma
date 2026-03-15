@@ -1,0 +1,31 @@
+---
+import { categories } from '../lib/categories';
+
+interface Props {
+  /** 'all' or a category slug */
+  activeFilter: string;
+}
+
+const { activeFilter } = Astro.props;
+
+const filters = [
+  { label: 'All', slug: 'all', href: '/blog' },
+  ...categories.map(c => ({ label: c.label, slug: c.slug, href: `/blog/topic/${c.slug}` })),
+];
+
+const btnBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors';
+const active   = 'bg-sage text-cream';
+const inactive = 'bg-cream border border-border text-stone hover:border-sage-light hover:text-sage-dark';
+---
+
+<div class="flex flex-wrap gap-2 mt-8">
+  {filters.map(f => (
+    <a
+      href={f.href}
+      class={`${btnBase} ${f.slug === activeFilter ? active : inactive}`}
+      aria-current={f.slug === activeFilter ? 'page' : undefined}
+    >
+      {f.label}
+    </a>
+  ))}
+</div>
