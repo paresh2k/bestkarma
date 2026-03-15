@@ -7,9 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "content:validate": "node ./content-system/pipelines/validate-content.mjs",
-    "content:promote": "node ./content-system/pipelines/promote-article.mjs",
-    "content:bootstrap-bundles": "node ./content-system/pipelines/bootstrap-published-bundles.mjs"
+    "content:setup": "git clone https://github.com/paresh2k/bestkarma-content.git content-system"
   },
   "dependencies": {
     "@astrojs/vercel": "^9.0.4",
