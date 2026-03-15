@@ -6,14 +6,6 @@ import { categories } from '../../lib/categories';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Get active category from URL
-const activeCategory = Astro.url.searchParams.get('category') ?? 'all';
-const normalizedActive = activeCategory.toLowerCase();
-
-const filteredPosts = normalizedActive === 'all'
-  ? sortedPosts
-  : sortedPosts.filter(p => p.data.category.toLowerCase() === normalizedActive);
 ---
 
 <BaseLayout
@@ -32,31 +24,28 @@ const filteredPosts = normalizedActive === 'all'
       </p>
 
       <!-- Category filter -->
-      <div class="flex flex-wrap gap-2 mt-8">
-        {[{ label: 'All', blogHref: '/blog', slug: 'all' }, ...categories].map(cat => {
-          const isActive = cat.slug === normalizedActive || (cat.slug === 'all' && normalizedActive === 'all');
-          return (
-            <a
-              href={cat.blogHref}
-              class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-sage text-cream'
-                  : 'bg-cream border border-border text-stone hover:border-sage-light hover:text-sage-dark'
-              }`}
-            >
-              {cat.label}
-            </a>
-          );
-        })}
+      <div class="flex flex-wrap gap-2 mt-8" id="category-filters">
+        {[{ label: 'All', slug: 'all' }, ...categories].map(cat => (
+          <button
+            data-filter={cat.slug}
+            class={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer filter-btn ${
+              cat.slug === 'all'
+                ? 'bg-sage text-cream'
+                : 'bg-cream border border-border text-stone hover:border-sage-light hover:text-sage-dark'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
     </div>
   </div>
 
   <!-- Articles grid -->
   <div class="max-w-6xl mx-auto px-6 py-14">
-    {filteredPosts.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPosts.map(post => (
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {sortedPosts.map(post => (
+        <div data-category={post.data.category}>
           <ArticleCard
             title={post.data.title}
             description={post.data.description}
@@ -66,16 +55,41 @@ const filteredPosts = normalizedActive === 'all'
             heroImage={post.data.heroImage}
             readTime={post.data.readTime}
           />
-        ))}
-      </div>
-    ) : (
-      <div class="text-center py-20">
-        <p class="font-heading text-2xl text-stone mb-3">No articles yet in this category</p>
-        <p class="text-stone-light mb-6">Check back soon — the pipeline is humming.</p>
-        <a href="/blog" class="text-sage-dark font-medium hover:text-sage transition-colors">
-          ← Browse all articles
-        </a>
-      </div>
-    )}
+        </div>
+      ))}
+    </div>
+    <p id="no-results" class="hidden text-center py-20 font-heading text-2xl text-stone">
+      No articles yet in this category.
+    </p>
   </div>
 </BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('#articles-grid [data-category]');
+  const noResults = document.getElementById('no-results');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter ?? 'all';
+
+      // Update active button styles
+      buttons.forEach(b => {
+        b.classList.remove('bg-sage', 'text-cream');
+        b.classList.add('bg-cream', 'border', 'border-border', 'text-stone');
+      });
+      btn.classList.add('bg-sage', 'text-cream');
+      btn.classList.remove('bg-cream', 'border', 'border-border', 'text-stone');
+
+      // Show/hide cards
+      let visible = 0;
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+
+      noResults?.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>
