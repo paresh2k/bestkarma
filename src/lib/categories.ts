@@ -2,7 +2,7 @@ export const categories = [
   {
     slug: 'wellness',
     label: 'Wellness',
-    description: 'Daily behaviors, habit loops, and foundational wellness practices that hold the whole system together.',
+    description: 'Daily habits and practical wellness practices that support long-term health.',
     shortDescription: 'Foundational habits for everyday health.',
     href: '/topics/wellness',
     blogHref: '/blog?category=wellness',
@@ -22,7 +22,7 @@ export const categories = [
   {
     slug: 'nutrition',
     label: 'Nutrition',
-    description: 'Evidence-aware eating, metabolic health, gut function, and food choices that support real life.',
+    description: 'Food, metabolism, gut health, and eating patterns that support everyday life.',
     shortDescription: 'Food, metabolism, and practical nutrition.',
     href: '/topics/nutrition',
     blogHref: '/blog?category=nutrition',
@@ -32,7 +32,7 @@ export const categories = [
   {
     slug: 'sleep',
     label: 'Sleep',
-    description: 'Recovery, sleep architecture, circadian health, and the habits that make nights restorative.',
+    description: 'Recovery, circadian health, and the habits that help you sleep better.',
     shortDescription: 'Recovery, rest, and circadian health.',
     href: '/topics/sleep',
     blogHref: '/blog?category=sleep',
@@ -42,7 +42,7 @@ export const categories = [
   {
     slug: 'mind-body',
     label: 'Mind & Body',
-    description: 'Stress, mindfulness, emotional regulation, and the feedback loop between psychology and physiology.',
+    description: 'Stress, mindfulness, emotional wellbeing, and the connection between mind and body.',
     shortDescription: 'Stress, mindfulness, and emotional resilience.',
     href: '/topics/mind-body',
     blogHref: '/blog?category=mind-body',
