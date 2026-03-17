@@ -101,9 +101,9 @@ const formId = `newsletter-${variant}-${Math.random().toString(36).slice(2, 7)}`
   if (!form) return;
 
   const btn = form.querySelector('.submit-btn');
-  const successMsg = form.closest('section, div, form')?.querySelector('.success-msg') ?? form.querySelector('.success-msg');
-  const errorMsg = form.closest('section, div, form')?.querySelector('.error-msg') ?? form.querySelector('.error-msg');
-  const noMsg = form.closest('section, div, form')?.querySelector('.no-msg');
+  const successMsg = form.parentElement?.querySelector('.success-msg') ?? form.querySelector('.success-msg');
+  const errorMsg = form.parentElement?.querySelector('.error-msg') ?? form.querySelector('.error-msg');
+  const noMsg = form.parentElement?.querySelector('.no-msg');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
