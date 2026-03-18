@@ -123,9 +123,16 @@ const formId = `newsletter-${variant}-${Math.random().toString(36).slice(2, 7)}`
       const data = await res.json();
 
       if (res.ok && data.success) {
-        form.classList.add('hidden');
-        if (noMsg) noMsg.classList.add('hidden');
-        if (successMsg) successMsg.classList.remove('hidden');
+        if (successMsg) {
+          // Hide every sibling of successMsg (works for all variants)
+          const container = successMsg.parentElement;
+          if (container) {
+            Array.from(container.children).forEach(el => {
+              if (el !== successMsg) el.classList.add('hidden');
+            });
+          }
+          successMsg.classList.remove('hidden');
+        }
       } else {
         throw new Error(data.error || 'Something went wrong. Please try again.');
       }
