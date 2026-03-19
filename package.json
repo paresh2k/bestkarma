@@ -10,6 +10,7 @@
     "content:setup": "git clone https://github.com/paresh2k/bestkarma-content.git content-system"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.1",
     "@astrojs/vercel": "^9.0.4",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.1",
