@@ -7,9 +7,16 @@ import { categories } from '../lib/categories';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredPosts = sortedPosts.slice(0, 3);
 const articleCount = sortedPosts.length;
 const latestReviewDate = sortedPosts[0]?.data.reviewedDate ?? new Date();
+
+// Group articles by pillar — 1 featured + up to 3 secondary per pillar
+const postsByPillar = Object.fromEntries(
+  categories.map(cat => [
+    cat.slug,
+    sortedPosts.filter(p => p.data.category?.toLowerCase() === cat.slug),
+  ])
+);
 
 const proofPoints = [
   { label: 'Published articles', value: String(articleCount).padStart(2, '0') },
@@ -137,46 +144,106 @@ const franchises = [
     </div>
   </section>
 
-  <!-- Featured Articles -->
-  {featuredPosts.length > 0 && (
-    <section class="py-16 px-6 bg-cream-dark/50">
-      <div class="max-w-6xl mx-auto">
-        <div class="flex items-end justify-between mb-8">
-          <div>
-            <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">Latest</p>
-            <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">From the archive</h2>
-          </div>
-          <a href="/blog" class="hidden md:inline-flex items-center gap-1 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
-            All articles
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
+  <!-- Pillar Sections — one per topic -->
+  <section class="py-16 px-6 bg-cream-dark/30">
+    <div class="max-w-6xl mx-auto">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredPosts.map((post, i) => (
-            <ArticleCard
-              title={post.data.title}
-              description={post.data.description}
-              slug={post.id.replace(/\.mdx?$/, '')}
-              category={post.data.category}
-              pubDate={post.data.pubDate}
-              heroImage={post.data.heroImage}
-              readTime={post.data.readTime}
-              featured={i === 0}
-            />
-          ))}
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">Explore by topic</p>
+          <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">From the archive</h2>
         </div>
-
-        <div class="mt-8 md:hidden">
-          <a href="/blog" class="inline-flex items-center gap-1 text-sage-dark font-medium text-sm">
-            View all articles →
-          </a>
-        </div>
+        <a href="/blog" class="hidden md:inline-flex items-center gap-1 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
+          All articles
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
       </div>
-    </section>
-  )}
+
+      <div class="space-y-14">
+        {categories.map((topic, i) => {
+          const pillarPosts = postsByPillar[topic.slug] ?? [];
+          const featured = pillarPosts[0];
+          const secondary = pillarPosts.slice(1, 4);
+          if (!featured) return null;
+
+          return (
+            <div class={i < categories.length - 1 ? 'pb-14 border-b border-border' : ''}>
+
+              <!-- Pillar header -->
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                  <div class={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${topic.colorClass}`} set:html={topic.icon} />
+                  <h3 class="font-heading text-2xl font-semibold text-bark">{topic.label}</h3>
+                  <span class="text-stone-light text-sm hidden sm:inline">{pillarPosts.length} articles</span>
+                </div>
+                <a href={topic.blogHref} class="hidden md:flex items-center gap-1 text-sm font-medium text-sage-dark hover:text-sage transition-colors">
+                  All {topic.label}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+              </div>
+
+              <!-- Featured + secondary grid -->
+              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+                <!-- Featured card — left, 3 cols -->
+                <div class="lg:col-span-3">
+                  <ArticleCard
+                    title={featured.data.title}
+                    description={featured.data.description}
+                    slug={featured.id.replace(/\.mdx?$/, '')}
+                    category={featured.data.category}
+                    pubDate={featured.data.pubDate}
+                    heroImage={featured.data.heroImage}
+                    readTime={featured.data.readTime}
+                  />
+                </div>
+
+                <!-- Secondary cards — right, 2 cols -->
+                <div class="lg:col-span-2 flex flex-col divide-y divide-border">
+                  {secondary.map(post => (
+                    <a
+                      href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
+                      class="group flex gap-4 py-4 first:pt-0 last:pb-0 rounded-xl px-2 hover:bg-cream-dark/60 transition-colors"
+                    >
+                      {post.data.heroImage && (
+                        <img
+                          src={post.data.heroImage}
+                          alt={post.data.title}
+                          class="w-20 h-16 rounded-lg object-cover shrink-0"
+                          loading="lazy"
+                        />
+                      )}
+                      <div class="flex-1 min-w-0">
+                        <p class="font-heading font-semibold text-bark text-sm leading-snug mb-1 line-clamp-2 group-hover:text-sage-dark transition-colors">
+                          {post.data.title}
+                        </p>
+                        <p class="text-stone text-xs leading-relaxed line-clamp-2 mb-2">
+                          {post.data.description}
+                        </p>
+                        <span class="text-sage-dark text-xs font-medium">{post.data.readTime ?? 5} min read →</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
+              </div>
+
+              <!-- Mobile: see all -->
+              <div class="mt-5 md:hidden">
+                <a href={topic.blogHref} class="text-sage-dark text-sm font-medium">
+                  All {topic.label} articles →
+                </a>
+              </div>
+
+            </div>
+          );
+        })}
+      </div>
+
+    </div>
+  </section>
 
   <section class="px-6 py-16 bg-mist border-y border-sage-light/20">
     <div class="max-w-6xl mx-auto">
@@ -201,42 +268,6 @@ const franchises = [
             <h3 class="font-heading text-xl font-semibold text-bark mb-2">{franchise.title}</h3>
             <p class="text-sm leading-relaxed text-stone">{franchise.description}</p>
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Topics Grid -->
-  <section class="py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Topics</p>
-        <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">What we cover</h2>
-        <p class="text-stone mt-3 text-lg max-w-xl mx-auto">
-          Five core topics, each with its own home for readers who want to learn more.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-        {categories.map(topic => (
-          <a
-            href={topic.href}
-            class="group flex flex-col p-6 rounded-2xl bg-cream-dark border border-border hover:border-sage-light hover:shadow-md transition-all duration-300"
-          >
-            <div class={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${topic.colorClass}`} set:html={topic.icon} />
-            <h3 class="font-heading font-semibold text-bark text-lg mb-2 group-hover:text-sage-dark transition-colors">
-              {topic.label}
-            </h3>
-            <p class="text-stone text-sm leading-relaxed flex-1">
-              {topic.description}
-            </p>
-            <span class="mt-4 text-sage-dark text-sm font-medium group-hover:gap-2 flex items-center gap-1 transition-all">
-              Explore
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-              </svg>
-            </span>
-          </a>
         ))}
       </div>
     </div>
