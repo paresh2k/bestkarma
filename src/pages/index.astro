@@ -10,7 +10,56 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 const articleCount = sortedPosts.length;
 const latestReviewDate = sortedPosts[0]?.data.reviewedDate ?? new Date();
 
-// Group articles by pillar — 1 featured + up to 3 secondary per pillar
+// Curated picks per pillar — chosen for Gen Z + women audiences, accessible titles, strong hooks
+const pillarCuration: Record<string, { featured: string; secondary: string[] }> = {
+  wellness: {
+    featured: 'burnout-science-brain-body-effects',
+    secondary: [
+      'perimenopause-anxiety-brain-chemistry',
+      'slow-living-cozy-wellness-science',
+      'cortisol-women-hormones-life-stages',
+    ],
+  },
+  longevity: {
+    featured: 'morning-routine-longevity',
+    secondary: [
+      'ikigai-purpose-longevity',
+      'grip-strength-longevity',
+      'blue-zones-decoded',
+    ],
+  },
+  sleep: {
+    featured: 'napping-science',
+    secondary: [
+      'sleep-metabolism-weight',
+      'menstrual-cycle-sleep-architecture',
+      'sleep-debt-recovery-science',
+    ],
+  },
+  nutrition: {
+    featured: 'gut-brain-connection',
+    secondary: [
+      'fermented-foods-microbiome',
+      'creatine-women-benefits',
+      'caffeine-timing-performance-adenosine',
+    ],
+  },
+  'mind-body': {
+    featured: 'emotional-regulation-science',
+    secondary: [
+      'self-compassion-science',
+      'breathwork-physiology',
+      'chronic-stress-cortisol',
+    ],
+  },
+};
+
+// Build post lookup by slug for fast access
+const postBySlug = Object.fromEntries(
+  sortedPosts.map(p => [p.id.replace(/\.mdx?$/, ''), p])
+);
+
+// Group articles by pillar — all posts for article counts
 const postsByPillar = Object.fromEntries(
   categories.map(cat => [
     cat.slug,
@@ -164,8 +213,11 @@ const franchises = [
       <div class="space-y-14">
         {categories.map((topic, i) => {
           const pillarPosts = postsByPillar[topic.slug] ?? [];
-          const featured = pillarPosts[0];
-          const secondary = pillarPosts.slice(1, 4);
+          const curation = pillarCuration[topic.slug];
+          const featured = curation ? postBySlug[curation.featured] : pillarPosts[0];
+          const secondary = curation
+            ? curation.secondary.map(s => postBySlug[s]).filter(Boolean)
+            : pillarPosts.slice(1, 4);
           if (!featured) return null;
 
           return (
@@ -200,8 +252,8 @@ const franchises = [
                   />
                 </div>
 
-                <!-- Secondary cards — right, 2 cols -->
-                <div class="lg:col-span-2 flex flex-col divide-y divide-border">
+                <!-- Secondary cards — right, 2 cols. Hidden on mobile for clean single-column layout -->
+                <div class="hidden lg:flex lg:col-span-2 flex-col divide-y divide-border">
                   {secondary.map(post => (
                     <a
                       href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
