@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const postBySlug = Object.fromEntries(
+  allPosts.map(p => [p.id.replace(/\.mdx?$/, ''), p])
+);
+
+const paths = [
+  {
+    id: 'sleep',
+    title: 'Fix my sleep',
+    description: 'Practical, evidence-based ways to sleep better — starting tonight',
+    accent: {
+      bg: 'bg-mist',
+      border: 'border-sage-light/40',
+      badge: 'bg-sage-light/30 text-sage-dark',
+      number: 'bg-sage text-cream',
+      pill: 'bg-sage-light/25 text-sage-dark',
+    },
+    slugs: [
+      'alcohol-rem-sleep-suppression',
+      'cbt-i-insomnia-treatment',
+      'the-science-of-deep-sleep',
+      'temperature-sleep-core-cooling',
+    ],
+    notes: [
+      'Start here — the most common sleep saboteur people don\'t realize',
+      'The gold-standard treatment most doctors never mention',
+      'Understanding this changes how you think about \'enough\' sleep',
+      'The cheapest, fastest sleep fix most people miss',
+    ],
+  },
+  {
+    id: 'womens-healthspan',
+    title: 'Women\'s healthspan',
+    description: 'What changes in your 40s, why, and what the evidence says to do about it',
+    accent: {
+      bg: 'bg-terracotta-light/15',
+      border: 'border-terracotta-light/40',
+      badge: 'bg-terracotta-light/30 text-terracotta',
+      number: 'bg-terracotta text-cream',
+      pill: 'bg-terracotta-light/25 text-terracotta',
+    },
+    slugs: [
+      'perimenopause-anxiety-brain-chemistry',
+      'bone-density-perimenopause-prevention',
+      'cortisol-women-hormones-life-stages',
+      'creatine-women-benefits',
+    ],
+    notes: [
+      'Start here — it validates what many women feel but can\'t explain',
+      'The prevention window is shorter than most women realize',
+      'Explains why stress feels different in your 40s',
+      'One of the most practical, actionable pieces in the library',
+    ],
+  },
+  {
+    id: 'longevity',
+    title: 'Age better, starting now',
+    description: 'The longevity basics that matter most — without becoming a full-time optimizer',
+    accent: {
+      bg: 'bg-gold-light/20',
+      border: 'border-gold-light/50',
+      badge: 'bg-gold-light/40 text-bark',
+      number: 'bg-gold text-cream',
+      pill: 'bg-gold-light/30 text-bark',
+    },
+    slugs: [
+      'grip-strength-longevity',
+      'protein-muscle-aging',
+      'apob-cardiovascular-risk-longevity',
+      'vo2-max-longevity-predictor',
+    ],
+    notes: [
+      'Start here — surprising, practical, and immediately testable',
+      'The single dietary change with the biggest longevity payoff',
+      'The one test longevity doctors agree matters most',
+      'The metric that puts everything else in perspective',
+    ],
+  },
+  {
+    id: 'stress',
+    title: 'Calm my nervous system',
+    description: 'When you\'re exhausted but wired — the science of stress, burnout, and recovery',
+    accent: {
+      bg: 'bg-cream-dark/60',
+      border: 'border-border',
+      badge: 'bg-cream-dark text-stone',
+      number: 'bg-stone text-cream',
+      pill: 'bg-cream-dark text-stone',
+    },
+    slugs: [
+      'vagus-nerve-polyvagal',
+      'burnout-science-brain-body-effects',
+      'loneliness-epidemic-health',
+      'nervous-system-reset-sympathetic-parasympathetic',
+    ],
+    notes: [
+      'Start here — reframes stress as a trainable system, not a personality flaw',
+      'Makes burnout feel real and medical — not just being tired',
+      'The most under-discussed health risk of our era',
+      'Practical techniques you can use the same day you read it',
+    ],
+  },
+];
+
+const browseLinks = [
+  { label: 'All articles', href: '/blog' },
+  { label: 'Women\'s health', href: '/blog/topic/wellness' },
+  { label: 'Sleep', href: '/blog/topic/sleep' },
+  { label: 'Longevity', href: '/blog/topic/longevity' },
+];
+---
+
+<BaseLayout
+  title="Start Here"
+  description="New to BestKarma? Pick a reading path that matches what matters to you right now — sleep, women's healthspan, longevity, or stress recovery."
+>
+  <!-- Header -->
+  <section class="bg-cream-dark/60 border-b border-border">
+    <div class="max-w-4xl mx-auto px-6 py-16">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">New here?</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark leading-tight">
+        Start here
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-stone">
+        {allPosts.length} articles is a lot. Pick what matters to you right now and we'll show you the best pieces to read first.
+      </p>
+    </div>
+  </section>
+
+  <!-- Reading paths -->
+  <section class="max-w-4xl mx-auto px-6 py-16 space-y-16">
+    {paths.map((path) => {
+      const articles = path.slugs.map(s => postBySlug[s]).filter(Boolean);
+
+      return (
+        <div>
+          <!-- Path header -->
+          <div class={`rounded-2xl ${path.accent.bg} border ${path.accent.border} p-6 md:p-8 mb-6`}>
+            <span class={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${path.accent.badge} mb-3`}>
+              Reading path
+            </span>
+            <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark">
+              {path.title}
+            </h2>
+            <p class="mt-2 text-stone leading-relaxed">
+              {path.description}
+            </p>
+          </div>
+
+          <!-- Article list -->
+          <div class="space-y-4">
+            {articles.map((post, i) => {
+              const slug = post.id.replace(/\.mdx?$/, '');
+              return (
+                <a
+                  href={`/blog/${slug}`}
+                  class="group flex gap-4 md:gap-5 rounded-2xl border border-border bg-white p-4 md:p-5 hover:border-sage-light hover:shadow-sm transition-all"
+                >
+                  <!-- Number badge -->
+                  <div class={`w-8 h-8 rounded-full ${path.accent.number} flex items-center justify-center text-sm font-bold shrink-0 mt-0.5`}>
+                    {i + 1}
+                  </div>
+
+                  <div class="flex-1 min-w-0">
+                    <!-- Why-read pill -->
+                    <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${path.accent.pill} mb-2`}>
+                      {path.notes[i]}
+                    </span>
+
+                    <h3 class="font-heading text-lg font-semibold text-bark leading-snug group-hover:text-sage-dark transition-colors">
+                      {post.data.title}
+                    </h3>
+                    <p class="mt-1 text-stone text-sm leading-relaxed line-clamp-2">
+                      {post.data.description}
+                    </p>
+                    <span class="inline-block mt-2 text-sage-dark text-xs font-medium">
+                      {post.data.readTime ?? 5} min read
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+
+          <!-- Newsletter signup per path -->
+          <div class="mt-8">
+            <NewsletterSignup variant="inline" source={`start-here-${path.id}`} />
+          </div>
+        </div>
+      );
+    })}
+  </section>
+
+  <!-- Browse section -->
+  <section class="border-t border-border bg-cream-dark/40">
+    <div class="max-w-4xl mx-auto px-6 py-16 text-center">
+      <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark mb-3">
+        Or dive straight in
+      </h2>
+      <p class="text-stone mb-8">Browse by topic or explore the full archive.</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        {browseLinks.map((link) => (
+          <a
+            href={link.href}
+            class="rounded-full border border-bark/10 bg-white/70 px-6 py-2.5 text-sm font-semibold text-bark hover:border-sage-light hover:text-sage-dark transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
