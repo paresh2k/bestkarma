@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
+import ShareBar from '../components/ShareBar.astro';
 import { getCategory } from '../lib/categories';
 import { getEditorialProfile } from '../lib/editorial';
 import fs from 'node:fs/promises';
@@ -66,6 +67,8 @@ const categoryMeta = getCategory(category);
 const authorProfile = getEditorialProfile(author);
 const reviewerProfile = getEditorialProfile(reviewer);
 const bundleDir = path.join(process.cwd(), 'content-system', 'published', `${slug}.bundle`);
+
+const articleUrl = new URL(`/blog/${slug}`, Astro.site ?? Astro.url.origin).toString();
 
 let sourceSummary: { sourceCount?: number; note?: string } | null = null;
 try {
@@ -160,24 +163,27 @@ const breadcrumbJsonLd = {
         </p>
 
         <!-- Meta row -->
-        <div class="flex flex-wrap items-center gap-6 text-sm text-stone-light pb-8 border-b border-border">
-          <time datetime={pubDate.toISOString()}>
-            Published {formattedPubDate}
-          </time>
-          <time datetime={reviewedDate.toISOString()}>
-            Reviewed {formattedReviewedDate}
-          </time>
-          {updatedDate && (
-            <time datetime={updatedDate.toISOString()}>
-              Updated {formattedUpdatedDate}
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-border">
+          <div class="flex flex-wrap items-center gap-6 text-sm text-stone-light">
+            <time datetime={pubDate.toISOString()}>
+              Published {formattedPubDate}
             </time>
-          )}
-          <span class="flex items-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-            </svg>
-            {readTime} min read
-          </span>
+            <time datetime={reviewedDate.toISOString()}>
+              Reviewed {formattedReviewedDate}
+            </time>
+            {updatedDate && (
+              <time datetime={updatedDate.toISOString()}>
+                Updated {formattedUpdatedDate}
+              </time>
+            )}
+            <span class="flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              {readTime} min read
+            </span>
+          </div>
+          <ShareBar title={title} url={articleUrl} description={description} variant="compact" />
         </div>
       </div>
     </div>
@@ -200,6 +206,14 @@ const breadcrumbJsonLd = {
         <slot />
       </div>
 
+      <!-- Share bar (full) -->
+      <div class="mt-10 pt-8 border-t border-border">
+        <p class="text-sm text-stone mb-4">
+          Found this useful? Share it with someone who'd appreciate it.
+        </p>
+        <ShareBar title={title} url={articleUrl} description={description} />
+      </div>
+
       <div class="mt-12 grid gap-4 md:grid-cols-2">
         {authorProfile && (
           <div class="rounded-2xl border border-border bg-white/70 p-6">
@@ -220,10 +234,10 @@ const breadcrumbJsonLd = {
       </div>
 
       <!-- Tags -->
-      {tags.length > 0 && (
+      {tags.filter(t => !t.startsWith('path:') && !t.startsWith('collection:')).length > 0 && (
         <div class="mt-12 pt-8 border-t border-border">
           <div class="flex flex-wrap gap-2">
-            {tags.map(tag => (
+            {tags.filter(t => !t.startsWith('path:') && !t.startsWith('collection:')).map(tag => (
               <a href={`/tags/${tag}`} class="text-xs font-medium px-3 py-1.5 bg-mist text-stone rounded-full capitalize hover:bg-sage-light/40 hover:text-sage-dark transition-colors">
                 #{tag}
               </a>

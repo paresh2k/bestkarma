@@ -1,0 +1,179 @@
+---
+interface Props {
+  title: string;
+  url: string;
+  description?: string;
+  variant?: 'full' | 'compact';
+}
+
+const { title, url, description = '', variant = 'full' } = Astro.props;
+
+const encodedTitle = encodeURIComponent(title);
+const encodedUrl = encodeURIComponent(url);
+
+const twitterUrl = `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+const emailSubject = encodedTitle;
+const emailBody = encodeURIComponent(`I thought you'd find this interesting:\n\n${title}\n${url}\n\n${description}`);
+const emailUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+
+const isCompact = variant === 'compact';
+const iconSize = isCompact ? '16' : '18';
+---
+
+{isCompact ? (
+  <div class="flex items-center gap-1.5">
+    <!-- Copy link -->
+    <button
+      data-share-copy={url}
+      class="group relative inline-flex items-center justify-center w-8 h-8 rounded-full text-stone-light hover:text-sage-dark hover:bg-sage-light/30 transition-colors"
+      title="Copy link"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span class="copy-tooltip absolute -bottom-8 left-1/2 -translate-x-1/2 text-[11px] font-medium text-sage-dark bg-mist px-2 py-0.5 rounded opacity-0 pointer-events-none transition-opacity whitespace-nowrap">Copied!</span>
+    </button>
+
+    <!-- Email -->
+    <a
+      href={emailUrl}
+      class="inline-flex items-center justify-center w-8 h-8 rounded-full text-stone-light hover:text-sage-dark hover:bg-sage-light/30 transition-colors"
+      title="Share via email"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    </a>
+
+    <!-- X/Twitter -->
+    <a
+      href={twitterUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center justify-center w-8 h-8 rounded-full text-stone-light hover:text-sage-dark hover:bg-sage-light/30 transition-colors"
+      title="Share on X"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+
+    <!-- LinkedIn -->
+    <a
+      href={linkedinUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center justify-center w-8 h-8 rounded-full text-stone-light hover:text-sage-dark hover:bg-sage-light/30 transition-colors"
+      title="Share on LinkedIn"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+
+    <!-- Native share (mobile) -->
+    <button
+      data-share-native={url}
+      data-share-title={title}
+      class="hidden items-center justify-center w-8 h-8 rounded-full text-stone-light hover:text-sage-dark hover:bg-sage-light/30 transition-colors"
+      title="Share"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+    </button>
+  </div>
+) : (
+  <div class="flex flex-wrap items-center gap-3">
+    <span class="text-sm font-medium text-stone mr-1">Share this article</span>
+
+    <!-- Copy link -->
+    <button
+      data-share-copy={url}
+      class="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-white/70 text-stone hover:text-sage-dark hover:border-sage-light/60 hover:bg-sage-light/20 transition-colors text-sm font-medium"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span class="copy-label">Copy link</span>
+    </button>
+
+    <!-- Email -->
+    <a
+      href={emailUrl}
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-white/70 text-stone hover:text-sage-dark hover:border-sage-light/60 hover:bg-sage-light/20 transition-colors text-sm font-medium"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      Email
+    </a>
+
+    <!-- X/Twitter -->
+    <a
+      href={twitterUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-white/70 text-stone hover:text-sage-dark hover:border-sage-light/60 hover:bg-sage-light/20 transition-colors text-sm font-medium"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      X
+    </a>
+
+    <!-- LinkedIn -->
+    <a
+      href={linkedinUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-white/70 text-stone hover:text-sage-dark hover:border-sage-light/60 hover:bg-sage-light/20 transition-colors text-sm font-medium"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+
+    <!-- Native share (mobile) -->
+    <button
+      data-share-native={url}
+      data-share-title={title}
+      class="hidden items-center gap-2 px-4 py-2 rounded-full border border-border bg-white/70 text-stone hover:text-sage-dark hover:border-sage-light/60 hover:bg-sage-light/20 transition-colors text-sm font-medium"
+    >
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+      Share...
+    </button>
+  </div>
+)}
+
+<script>
+  // Copy link buttons
+  document.querySelectorAll('[data-share-copy]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const url = btn.getAttribute('data-share-copy');
+      if (!url) return;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      // Show feedback — full variant uses .copy-label, compact uses .copy-tooltip
+      const label = btn.querySelector('.copy-label');
+      if (label) {
+        const original = label.textContent;
+        label.textContent = 'Copied!';
+        setTimeout(() => { label.textContent = original; }, 2000);
+      }
+      const tooltip = btn.querySelector('.copy-tooltip');
+      if (tooltip) {
+        tooltip.style.opacity = '1';
+        setTimeout(() => { tooltip.style.opacity = '0'; }, 1500);
+      }
+    });
+  });
+
+  // Native share buttons (mobile)
+  document.querySelectorAll('[data-share-native]').forEach(btn => {
+    if (!navigator.share) return;
+    // Show the button on devices that support Web Share API
+    (btn as HTMLElement).style.display = 'inline-flex';
+    btn.addEventListener('click', () => {
+      navigator.share({
+        title: btn.getAttribute('data-share-title') ?? '',
+        url: btn.getAttribute('data-share-native') ?? '',
+      });
+    });
+  });
+</script>
