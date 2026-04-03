@@ -252,16 +252,28 @@ const breadcrumbJsonLd = {
 
       <!-- Newsletter inline -->
       <div class="mt-12">
+        <div class="mb-4">
+          <p class="font-heading text-xl font-semibold text-bark">Enjoyed this?</p>
+          <p class="text-stone text-sm mt-1">
+            BestKarma Weekly sends one science-backed insight like this every Sunday — with one thing you can act on that week. No hype, no spam.
+          </p>
+        </div>
         <NewsletterSignup variant="inline" source={`article-${slug}`} />
       </div>
 
-      <!-- Back link -->
-      <div class="mt-10">
+      <!-- Back links -->
+      <div class="mt-10 flex items-center justify-between">
         <a href="/blog" class="inline-flex items-center gap-2 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
           </svg>
           All articles
+        </a>
+        <a href="/start-here" class="inline-flex items-center gap-2 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
+          Start Here
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
         </a>
       </div>
     </div>
