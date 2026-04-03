@@ -8,110 +8,78 @@ const postBySlug = Object.fromEntries(
   allPosts.map(p => [p.id.replace(/\.mdx?$/, ''), p])
 );
 
-const paths = [
+const icons: Record<string, string> = {
+  moon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+  heart: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  leaf: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+  wind: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
+};
+
+const readingPaths = [
   {
     id: 'sleep',
+    icon: 'moon',
     title: 'Fix my sleep',
-    description: 'Practical, evidence-based ways to sleep better — starting tonight',
-    accent: {
-      bg: 'bg-mist',
-      border: 'border-sage-light/40',
-      badge: 'bg-sage-light/30 text-sage-dark',
-      number: 'bg-sage text-cream',
-      pill: 'bg-sage-light/25 text-sage-dark',
-    },
-    slugs: [
-      'alcohol-rem-sleep-suppression',
-      'cbt-i-insomnia-treatment',
-      'the-science-of-deep-sleep',
-      'temperature-sleep-core-cooling',
-    ],
-    notes: [
-      'Start here — the most common sleep saboteur people don\'t realize',
-      'The gold-standard treatment most doctors never mention',
-      'Understanding this changes how you think about \'enough\' sleep',
-      'The cheapest, fastest sleep fix most people miss',
+    description: 'Evidence-based ways to sleep better \u2014 starting tonight',
+    accentClass: 'bg-mist border-sage-light/40 text-sage-dark',
+    selectedClass: 'bg-sage-light/40 border-sage ring-2 ring-sage/20',
+    number: 'bg-sage text-cream',
+    pill: 'bg-sage-light/25 text-sage-dark',
+    articles: [
+      { slug: 'alcohol-rem-sleep-suppression', note: 'Start here \u2014 the most common sleep saboteur people don\u2019t realize' },
+      { slug: 'cbt-i-insomnia-treatment', note: 'The gold-standard treatment most doctors never mention' },
+      { slug: 'the-science-of-deep-sleep', note: 'Understanding this changes how you think about \u2018enough\u2019 sleep' },
+      { slug: 'temperature-sleep-core-cooling', note: 'The cheapest, fastest sleep fix most people miss' },
     ],
   },
   {
-    id: 'womens-healthspan',
-    title: 'Women\'s healthspan',
-    description: 'What changes in your 40s, why, and what the evidence says to do about it',
-    accent: {
-      bg: 'bg-terracotta-light/15',
-      border: 'border-terracotta-light/40',
-      badge: 'bg-terracotta-light/30 text-terracotta',
-      number: 'bg-terracotta text-cream',
-      pill: 'bg-terracotta-light/25 text-terracotta',
-    },
-    slugs: [
-      'perimenopause-anxiety-brain-chemistry',
-      'bone-density-perimenopause-prevention',
-      'cortisol-women-hormones-life-stages',
-      'creatine-women-benefits',
-    ],
-    notes: [
-      'Start here — it validates what many women feel but can\'t explain',
-      'The prevention window is shorter than most women realize',
-      'Explains why stress feels different in your 40s',
-      'One of the most practical, actionable pieces in the library',
+    id: 'women',
+    icon: 'heart',
+    title: 'Women\u2019s healthspan',
+    description: 'What changes in your 40s, why, and what to do about it',
+    accentClass: 'bg-terracotta-light/20 border-terracotta/20 text-terracotta',
+    selectedClass: 'bg-terracotta-light/30 border-terracotta ring-2 ring-terracotta/20',
+    number: 'bg-terracotta text-cream',
+    pill: 'bg-terracotta-light/25 text-terracotta',
+    articles: [
+      { slug: 'perimenopause-anxiety-brain-chemistry', note: 'Start here \u2014 validates what many women feel but can\u2019t explain' },
+      { slug: 'bone-density-perimenopause-prevention', note: 'The prevention window is shorter than most women realize' },
+      { slug: 'cortisol-women-hormones-life-stages', note: 'Explains why stress feels different in your 40s' },
+      { slug: 'creatine-women-benefits', note: 'One of the most practical, actionable pieces in the library' },
     ],
   },
   {
     id: 'longevity',
+    icon: 'leaf',
     title: 'Age better, starting now',
-    description: 'The longevity basics that matter most — without becoming a full-time optimizer',
-    accent: {
-      bg: 'bg-gold-light/20',
-      border: 'border-gold-light/50',
-      badge: 'bg-gold-light/40 text-bark',
-      number: 'bg-gold text-cream',
-      pill: 'bg-gold-light/30 text-bark',
-    },
-    slugs: [
-      'grip-strength-longevity',
-      'protein-muscle-aging',
-      'apob-cardiovascular-risk-longevity',
-      'vo2-max-longevity-predictor',
-    ],
-    notes: [
-      'Start here — surprising, practical, and immediately testable',
-      'The single dietary change with the biggest longevity payoff',
-      'The one test longevity doctors agree matters most',
-      'The metric that puts everything else in perspective',
+    description: 'Longevity basics without becoming a full-time optimizer',
+    accentClass: 'bg-gold-light/30 border-gold/20 text-stone',
+    selectedClass: 'bg-gold-light/50 border-gold ring-2 ring-gold/20',
+    number: 'bg-gold text-cream',
+    pill: 'bg-gold-light/30 text-bark',
+    articles: [
+      { slug: 'grip-strength-longevity', note: 'Start here \u2014 surprising, practical, and immediately testable' },
+      { slug: 'protein-muscle-aging', note: 'The single dietary change with the biggest longevity payoff' },
+      { slug: 'apob-cardiovascular-risk-longevity', note: 'The one test longevity doctors agree matters most' },
+      { slug: 'vo2-max-longevity-predictor', note: 'The metric that puts everything else in perspective' },
     ],
   },
   {
     id: 'stress',
+    icon: 'wind',
     title: 'Calm my nervous system',
-    description: 'When you\'re exhausted but wired — the science of stress, burnout, and recovery',
-    accent: {
-      bg: 'bg-cream-dark/60',
-      border: 'border-border',
-      badge: 'bg-cream-dark text-stone',
-      number: 'bg-stone text-cream',
-      pill: 'bg-cream-dark text-stone',
-    },
-    slugs: [
-      'vagus-nerve-polyvagal',
-      'burnout-science-brain-body-effects',
-      'loneliness-epidemic-health',
-      'nervous-system-reset-sympathetic-parasympathetic',
-    ],
-    notes: [
-      'Start here — reframes stress as a trainable system, not a personality flaw',
-      'Makes burnout feel real and medical — not just being tired',
-      'The most under-discussed health risk of our era',
-      'Practical techniques you can use the same day you read it',
+    description: 'The science of stress, burnout, and recovery',
+    accentClass: 'bg-cream-dark border-border text-stone',
+    selectedClass: 'bg-cream-dark/80 border-bark/30 ring-2 ring-bark/10',
+    number: 'bg-stone text-cream',
+    pill: 'bg-cream-dark text-stone',
+    articles: [
+      { slug: 'vagus-nerve-polyvagal', note: 'Reframes stress as a trainable system, not a personality flaw' },
+      { slug: 'burnout-science-brain-body-effects', note: 'Makes burnout feel real and medical \u2014 not just being tired' },
+      { slug: 'loneliness-epidemic-health', note: 'The most under-discussed health risk of our era' },
+      { slug: 'nervous-system-reset-sympathetic-parasympathetic', note: 'Practical techniques you can use the same day you read it' },
     ],
   },
-];
-
-const browseLinks = [
-  { label: 'All articles', href: '/blog' },
-  { label: 'Women\'s health', href: '/blog/topic/wellness' },
-  { label: 'Sleep', href: '/blog/topic/sleep' },
-  { label: 'Longevity', href: '/blog/topic/longevity' },
 ];
 ---
 
@@ -121,7 +89,7 @@ const browseLinks = [
 >
   <!-- Header -->
   <section class="bg-cream-dark/60 border-b border-border">
-    <div class="max-w-4xl mx-auto px-6 py-16">
+    <div class="max-w-4xl mx-auto px-6 pt-16 pb-10">
       <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">New here?</p>
       <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark leading-tight">
         Start here
@@ -129,57 +97,64 @@ const browseLinks = [
       <p class="mt-6 max-w-3xl text-lg leading-relaxed text-stone">
         {allPosts.length} articles is a lot. Pick what matters to you right now and we'll show you the best pieces to read first.
       </p>
+
+      <!-- Path selector grid -->
+      <div id="path-selector" class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {readingPaths.map((path) => (
+          <a
+            href={`#${path.id}`}
+            data-path={path.id}
+            data-accent={path.accentClass}
+            data-selected={path.selectedClass}
+            class={`path-card group rounded-2xl border p-4 transition-all cursor-pointer ${path.accentClass}`}
+          >
+            <div class="mb-2 opacity-75 group-hover:opacity-100 transition-opacity" set:html={icons[path.icon]} />
+            <h3 class="font-heading text-sm md:text-base font-semibold text-bark leading-snug">{path.title}</h3>
+            <p class="mt-1 text-xs leading-relaxed text-stone line-clamp-2">{path.description}</p>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- Reading paths -->
+  <!-- Path article sections -->
   <section class="max-w-4xl mx-auto px-6 py-16 space-y-16">
-    {paths.map((path) => {
-      const articles = path.slugs.map(s => postBySlug[s]).filter(Boolean);
+    {readingPaths.map((path) => {
+      const articles = path.articles.map(a => ({ ...a, post: postBySlug[a.slug] })).filter(a => a.post);
 
       return (
-        <div>
+        <div id={path.id} class="path-section scroll-mt-24">
           <!-- Path header -->
-          <div class={`rounded-2xl ${path.accent.bg} border ${path.accent.border} p-6 md:p-8 mb-6`}>
-            <span class={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${path.accent.badge} mb-3`}>
-              Reading path
-            </span>
-            <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark">
-              {path.title}
-            </h2>
-            <p class="mt-2 text-stone leading-relaxed">
-              {path.description}
-            </p>
+          <div class="flex items-center gap-3 mb-2">
+            <div class="opacity-75" set:html={icons[path.icon]} />
+            <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark">{path.title}</h2>
           </div>
+          <p class="text-stone leading-relaxed mb-6">{path.description}</p>
 
           <!-- Article list -->
           <div class="space-y-4">
-            {articles.map((post, i) => {
-              const slug = post.id.replace(/\.mdx?$/, '');
+            {articles.map((item, i) => {
+              const slug = item.post.id.replace(/\.mdx?$/, '');
               return (
                 <a
                   href={`/blog/${slug}`}
                   class="group flex gap-4 md:gap-5 rounded-2xl border border-border bg-white p-4 md:p-5 hover:border-sage-light hover:shadow-sm transition-all"
                 >
-                  <!-- Number badge -->
-                  <div class={`w-8 h-8 rounded-full ${path.accent.number} flex items-center justify-center text-sm font-bold shrink-0 mt-0.5`}>
+                  <div class={`w-8 h-8 rounded-full ${path.number} flex items-center justify-center text-sm font-bold shrink-0 mt-0.5`}>
                     {i + 1}
                   </div>
-
                   <div class="flex-1 min-w-0">
-                    <!-- Why-read pill -->
-                    <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${path.accent.pill} mb-2`}>
-                      {path.notes[i]}
+                    <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${path.pill} mb-2`}>
+                      {item.note}
                     </span>
-
                     <h3 class="font-heading text-lg font-semibold text-bark leading-snug group-hover:text-sage-dark transition-colors">
-                      {post.data.title}
+                      {item.post.data.title}
                     </h3>
                     <p class="mt-1 text-stone text-sm leading-relaxed line-clamp-2">
-                      {post.data.description}
+                      {item.post.data.description}
                     </p>
                     <span class="inline-block mt-2 text-sage-dark text-xs font-medium">
-                      {post.data.readTime ?? 5} min read
+                      {item.post.data.readTime ?? 5} min read
                     </span>
                   </div>
                 </a>
@@ -196,23 +171,74 @@ const browseLinks = [
     })}
   </section>
 
-  <!-- Browse section -->
+  <!-- Bottom links -->
   <section class="border-t border-border bg-cream-dark/40">
     <div class="max-w-4xl mx-auto px-6 py-16 text-center">
       <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark mb-3">
         Or dive straight in
       </h2>
-      <p class="text-stone mb-8">Browse by topic or explore the full archive.</p>
-      <div class="flex flex-wrap justify-center gap-3">
-        {browseLinks.map((link) => (
-          <a
-            href={link.href}
-            class="rounded-full border border-bark/10 bg-white/70 px-6 py-2.5 text-sm font-semibold text-bark hover:border-sage-light hover:text-sage-dark transition-colors"
-          >
-            {link.label}
-          </a>
-        ))}
+      <p class="text-stone mb-8">Browse the full archive or learn more about what we do.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 bg-bark text-cream font-semibold px-7 py-3 rounded-full hover:bg-stone transition-colors text-sm"
+        >
+          Browse all {allPosts.length} articles
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+        <a
+          href="/about"
+          class="inline-flex items-center gap-2 rounded-full border border-bark/10 bg-white/70 px-7 py-3 text-sm font-semibold text-bark hover:border-sage-light hover:text-sage-dark transition-colors"
+        >
+          About BestKarma
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const cards = document.querySelectorAll<HTMLAnchorElement>('.path-card');
+
+  function selectCard(id: string) {
+    cards.forEach(card => {
+      const cardId = card.dataset.path;
+      const accent = card.dataset.accent ?? '';
+      const selected = card.dataset.selected ?? '';
+
+      if (cardId === id) {
+        card.className = `path-card group rounded-2xl border p-4 transition-all cursor-pointer ${selected}`;
+      } else {
+        card.className = `path-card group rounded-2xl border p-4 transition-all cursor-pointer ${accent}`;
+      }
+    });
+  }
+
+  // Handle click
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = card.dataset.path;
+      if (!id) return;
+
+      selectCard(id);
+
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${id}`);
+      }
+    });
+  });
+
+  // Handle hash on load
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    selectCard(hash);
+  }
+</script>
