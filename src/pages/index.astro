@@ -1,428 +1,104 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ArticleCard from '../components/ArticleCard.astro';
-import NewsletterSignup from '../components/NewsletterSignup.astro';
-import { getCollection } from 'astro:content';
-import { categories } from '../lib/categories';
-import { HOMEPAGE_COLLECTIONS, getArticlesForTag } from '../lib/collections';
-
-const allPosts = await getCollection('blog');
-const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const articleCount = sortedPosts.length;
-const latestReviewDate = sortedPosts[0]?.data.reviewedDate ?? new Date();
-
-// Curated picks per pillar — chosen for Gen Z + women audiences, accessible titles, strong hooks
-const pillarCuration: Record<string, { featured: string; secondary: string[] }> = {
-  wellness: {
-    featured: 'burnout-science-brain-body-effects',
-    secondary: [
-      'perimenopause-anxiety-brain-chemistry',
-      'slow-living-cozy-wellness-science',
-      'cortisol-women-hormones-life-stages',
-    ],
-  },
-  longevity: {
-    featured: 'morning-routine-longevity',
-    secondary: [
-      'ikigai-purpose-longevity',
-      'grip-strength-longevity',
-      'blue-zones-decoded',
-    ],
-  },
-  sleep: {
-    featured: 'napping-science',
-    secondary: [
-      'sleep-metabolism-weight',
-      'menstrual-cycle-sleep-architecture',
-      'sleep-debt-recovery-science',
-    ],
-  },
-  nutrition: {
-    featured: 'gut-brain-connection',
-    secondary: [
-      'fermented-foods-microbiome',
-      'creatine-women-benefits',
-      'caffeine-timing-performance-adenosine',
-    ],
-  },
-  'mind-body': {
-    featured: 'emotional-regulation-science',
-    secondary: [
-      'self-compassion-science',
-      'breathwork-physiology',
-      'chronic-stress-cortisol',
-    ],
-  },
-};
-
-// Build post lookup by slug for fast access
-const postBySlug = Object.fromEntries(
-  sortedPosts.map(p => [p.id.replace(/\.mdx?$/, ''), p])
-);
-
-// Group articles by pillar — all posts for article counts
-const postsByPillar = Object.fromEntries(
-  categories.map(cat => [
-    cat.slug,
-    sortedPosts.filter(p => p.data.category?.toLowerCase() === cat.slug),
-  ])
-);
-
-const proofPoints = [
-  { label: 'Published articles', value: String(articleCount).padStart(2, '0') },
-  { label: 'Health topics', value: String(categories.length).padStart(2, '0') },
-  {
-    label: 'Last reviewed',
-    value: latestReviewDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-  },
-];
-
-const collectionData = HOMEPAGE_COLLECTIONS.map(c => ({
-  ...c,
-  articles: getArticlesForTag(allPosts, c.tag),
-}));
-
-const franchises = [
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-    title: 'Weekly evidence check',
-    description: 'One popular health claim tested against the actual quality of the research behind it.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    title: 'Sunday reset',
-    description: 'A short routine and planning brief that turns one piece of research into a single realistic action for the week.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l3 3"/><path d="M18 2v4"/><path d="M22 6h-4"/></svg>`,
-    title: 'Longevity notes',
-    description: 'A focused editorial stream for adults who care about healthy aging without making it a full-time hobby.',
-  },
-];
+// Holding page — active until LLC registration and site launch
+// To restore the full landing page: delete this file and rename index.astro.bak → index.astro
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BestKarma</title>
+  <meta name="description" content="Live Well. Age Wisely." />
+  <meta property="og:title" content="BestKarma" />
+  <meta property="og:description" content="Live Well. Age Wisely." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<BaseLayout title="Live well. Age wisely." description="BestKarma turns credible health and longevity research into clear, practical guidance you can trust.">
+    html, body {
+      height: 100%;
+      background: #FAF7F0;
+    }
 
-  <section class="relative overflow-hidden bg-cream pt-10 pb-14 md:pt-16 md:pb-20">
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute -top-32 right-8 h-96 w-96 rounded-full bg-sage-light/15 blur-2xl"></div>
-      <div class="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-gold-light/25 blur-2xl"></div>
-    </div>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    <div class="relative max-w-4xl mx-auto px-6 text-center">
-      <div class="inline-flex items-center gap-2 rounded-full bg-sage-light/30 px-4 py-2 text-xs font-semibold tracking-wide text-sage-dark mb-6">
-        <span class="h-1.5 w-1.5 rounded-full bg-sage-dark"></span>
-        Science-backed health and longevity
-      </div>
+    .lockup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
 
-      <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-bark leading-tight mb-5">
-        Live well.
-        <span class="text-sage"> Age wisely.</span>
-      </h1>
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-      <p class="text-stone text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
-        Clarity, not chaos. BestKarma turns credible health research into practical guidance you can trust — without hype, overwhelm, or supplement sales.
-      </p>
+    .mark {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 14px;
+      opacity: 0.9;
+    }
 
-      <div class="flex flex-wrap justify-center gap-4 mb-10">
-        <a
-          href="/start-here"
-          class="inline-flex items-center gap-2 bg-bark text-cream font-semibold px-7 py-3.5 rounded-full hover:bg-stone transition-colors text-base"
-        >
-          Start Here
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-          </svg>
-        </a>
-        <a
-          href="/newsletter"
-          class="inline-flex items-center gap-2 rounded-full border border-bark/10 bg-white/70 px-7 py-3.5 text-base font-semibold text-bark hover:border-sage-light hover:text-sage-dark transition-colors"
-        >
-          See the newsletter
-        </a>
-      </div>
+    .wordmark {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #1D9E75;
+      margin-bottom: 48px;
+    }
 
-      <!-- Proof stats bar -->
-      <div class="inline-flex flex-wrap justify-center gap-px rounded-2xl border border-border bg-border overflow-hidden shadow-sm">
-        {proofPoints.map((item) => (
-          <div class="flex items-center gap-3 bg-cream px-6 py-4">
-            <span class="font-heading text-2xl font-semibold text-bark">{item.value}</span>
-            <span class="text-sm text-stone">{item.label}</span>
-          </div>
-        ))}
-      </div>
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: #2C2417;
+      letter-spacing: 0.01em;
+      text-align: center;
+      line-height: 1.25;
+    }
 
-      <!-- House view -->
-      <p class="mt-6 text-sm text-stone/70 max-w-xl mx-auto">
-        Our editorial process favors what is credible, practical, and worth carrying into real life.
-      </p>
-    </div>
-  </section>
+    .tagline em {
+      font-style: italic;
+      color: #1D9E75;
+    }
 
-  <!-- Newsletter — dedicated block with clear value props -->
-  <section class="bg-mist border-y border-sage-light/30 py-10 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="flex flex-col md:flex-row md:items-center gap-8 md:gap-16">
+    .divider {
+      width: 32px;
+      height: 1px;
+      background: #C9BFB0;
+      margin: 36px auto 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="lockup">
 
-        <!-- Left: what you get -->
-        <div class="flex-1 min-w-0">
-          <p class="text-sage-dark text-xs font-semibold uppercase tracking-widest mb-2">Free Weekly Newsletter</p>
-          <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark mb-4">
-            Live well. Age wisely.<br class="hidden md:block" /> One practical insight every Sunday.
-          </h2>
-          <ul class="space-y-2.5">
-            <li class="flex items-start gap-2.5 text-stone text-sm">
-              <svg class="w-4 h-4 mt-0.5 text-sage shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-              <span><strong class="text-bark font-medium">Science-backed only</strong> — every claim cites peer-reviewed research, with no fads or supplement hype</span>
-            </li>
-            <li class="flex items-start gap-2.5 text-stone text-sm">
-              <svg class="w-4 h-4 mt-0.5 text-sage shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-              <span><strong class="text-bark font-medium">Practical takeaways</strong> — health and longevity research distilled into one thing you can act on this week</span>
-            </li>
-            <li class="flex items-start gap-2.5 text-stone text-sm">
-              <svg class="w-4 h-4 mt-0.5 text-sage shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-              <span><strong class="text-bark font-medium">Covers 5 core pillars</strong> — longevity, wellness, sleep, nutrition, and mind-body health</span>
-            </li>
-          </ul>
-        </div>
+    <svg class="mark" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M22 6C22 6 10 14 10 24C10 30.627 15.373 36 22 36C28.627 36 34 30.627 34 24C34 14 22 6 22 6Z" fill="#1D9E75" fill-opacity="0.15"/>
+      <path d="M22 6C22 6 10 14 10 24C10 30.627 15.373 36 22 36C28.627 36 34 30.627 34 24C34 14 22 6 22 6Z" stroke="#1D9E75" stroke-width="1.25" stroke-linejoin="round"/>
+      <path d="M22 36L22 18" stroke="#1D9E75" stroke-width="1.25" stroke-linecap="round"/>
+      <path d="M22 26C22 26 17 22 14 18" stroke="#1D9E75" stroke-width="1.25" stroke-linecap="round"/>
+      <path d="M22 22C22 22 27 19 30 16" stroke="#1D9E75" stroke-width="1.25" stroke-linecap="round"/>
+    </svg>
 
-        <!-- Right: signup form -->
-        <div class="md:w-80 lg:w-96 shrink-0">
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-border">
-            <p class="text-bark font-semibold text-base mb-1">Join free — no spam, ever.</p>
-            <p class="text-stone-light text-sm mb-4">Unsubscribe with one click, anytime.</p>
-            <NewsletterSignup variant="hero" source="homepage-hero" />
-          </div>
-        </div>
+    <p class="wordmark">BestKarma</p>
+    <h1 class="tagline">Live Well. <em>Age Wisely.</em></h1>
+    <div class="divider"></div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- Curated collections — Where to start -->
-  <section class="py-16 px-6 bg-cream">
-    <div class="max-w-6xl mx-auto">
-      <div class="flex items-end justify-between mb-10">
-        <div>
-          <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">Where to start</p>
-          <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">Curated collections</h2>
-        </div>
-        <a href="/start-here" class="hidden md:inline-flex items-center gap-1 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
-          All reading paths
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-          </svg>
-        </a>
-      </div>
-
-      <div class="space-y-12">
-        {collectionData.map((collection) => {
-          const posts = collection.articles;
-          if (posts.length === 0) return null;
-
-          return (
-            <div>
-              <div class="mb-4">
-                <h3 class="font-heading text-xl font-semibold text-bark">{collection.title}</h3>
-                <p class="text-stone text-sm mt-1">{collection.description}</p>
-              </div>
-
-              <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-hide">
-                {posts.map(post => {
-                  const slug = post.id.replace(/\.mdx?$/, '');
-                  const category = post.data.category;
-                  return (
-                    <a
-                      href={`/blog/${slug}`}
-                      class="group snap-start shrink-0 w-[260px] rounded-2xl border border-border bg-white overflow-hidden hover:border-sage-light hover:shadow-sm transition-all"
-                    >
-                      {post.data.heroImage && (
-                        <img
-                          src={post.data.heroImage}
-                          alt={post.data.title}
-                          class="w-full h-32 object-cover"
-                          loading="lazy"
-                        />
-                      )}
-                      <div class="p-4">
-                        <div class="flex items-center gap-2 mb-2">
-                          {category && (
-                            <span class="inline-block rounded-full bg-cream-dark px-2.5 py-0.5 text-xs font-medium text-stone capitalize">
-                              {category}
-                            </span>
-                          )}
-                          <span class="text-stone-light text-xs">{post.data.readTime ?? 5} min</span>
-                        </div>
-                        <h4 class="font-heading text-sm font-semibold text-bark leading-snug line-clamp-2 group-hover:text-sage-dark transition-colors">
-                          {post.data.title}
-                        </h4>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-
-              <div class="mt-2">
-                <a href="/start-here" class="text-sage-dark text-sm font-medium hover:text-sage transition-colors">
-                  See all &rarr;
-                </a>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- Pillar Sections — one per topic -->
-  <section class="py-16 px-6 bg-cream-dark/30">
-    <div class="max-w-6xl mx-auto">
-
-      <div class="flex items-end justify-between mb-10">
-        <div>
-          <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">Explore by topic</p>
-          <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">From the archive</h2>
-        </div>
-        <a href="/blog" class="hidden md:inline-flex items-center gap-1 text-sage-dark hover:text-sage font-medium text-sm transition-colors">
-          All articles
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-          </svg>
-        </a>
-      </div>
-
-      <div class="space-y-14">
-        {categories.map((topic, i) => {
-          const pillarPosts = postsByPillar[topic.slug] ?? [];
-          const curation = pillarCuration[topic.slug];
-          const featured = curation ? postBySlug[curation.featured] : pillarPosts[0];
-          const secondary = curation
-            ? curation.secondary.map(s => postBySlug[s]).filter(Boolean)
-            : pillarPosts.slice(1, 4);
-          if (!featured) return null;
-
-          return (
-            <div class={i < categories.length - 1 ? 'pb-14 border-b border-border' : ''}>
-
-              <!-- Pillar header -->
-              <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-3">
-                  <div class={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${topic.colorClass}`} set:html={topic.icon} />
-                  <h3 class="font-heading text-2xl font-semibold text-bark">{topic.label}</h3>
-                  <span class="text-stone-light text-sm hidden sm:inline">{pillarPosts.length} articles</span>
-                </div>
-                <a href={topic.blogHref} class="hidden md:flex items-center gap-1 text-sm font-medium text-sage-dark hover:text-sage transition-colors">
-                  All {topic.label}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-              </div>
-
-              <!-- Featured + secondary grid -->
-              <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-
-                <!-- Featured card — left, 3 cols -->
-                <div class="lg:col-span-3">
-                  <ArticleCard
-                    title={featured.data.title}
-                    description={featured.data.description}
-                    slug={featured.id.replace(/\.mdx?$/, '')}
-                    category={featured.data.category}
-                    pubDate={featured.data.pubDate}
-                    heroImage={featured.data.heroImage}
-                    readTime={featured.data.readTime}
-                  />
-                </div>
-
-                <!-- Secondary cards — right, 2 cols. Hidden on mobile for clean single-column layout -->
-                <div class="hidden lg:flex lg:col-span-2 flex-col divide-y divide-border">
-                  {secondary.map(post => (
-                    <a
-                      href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
-                      class="group flex gap-4 py-4 first:pt-0 last:pb-0 rounded-xl px-2 hover:bg-cream-dark/60 transition-colors"
-                    >
-                      {post.data.heroImage && (
-                        <img
-                          src={post.data.heroImage}
-                          alt={post.data.title}
-                          class="w-20 h-16 rounded-lg object-cover shrink-0"
-                          loading="lazy"
-                        />
-                      )}
-                      <div class="flex-1 min-w-0">
-                        <p class="font-heading font-semibold text-bark text-sm leading-snug mb-1 line-clamp-2 group-hover:text-sage-dark transition-colors">
-                          {post.data.title}
-                        </p>
-                        <p class="text-stone text-xs leading-relaxed line-clamp-2 mb-2">
-                          {post.data.description}
-                        </p>
-                        <span class="text-sage-dark text-xs font-medium">{post.data.readTime ?? 5} min read →</span>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-
-              </div>
-
-              <!-- Mobile: see all -->
-              <div class="mt-5 md:hidden">
-                <a href={topic.blogHref} class="text-sage-dark text-sm font-medium">
-                  All {topic.label} articles →
-                </a>
-              </div>
-
-            </div>
-          );
-        })}
-      </div>
-
-    </div>
-  </section>
-
-  <section class="px-6 py-16 bg-mist border-y border-sage-light/20">
-    <div class="max-w-6xl mx-auto">
-      <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-10">
-        <div>
-          <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">What we publish</p>
-          <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">Three formats, every week.</h2>
-          <p class="mt-3 text-stone text-lg max-w-xl">
-            Each issue of BestKarma Weekly leads with one of these — a consistent structure readers can rely on.
-          </p>
-        </div>
-        <a href="/newsletter" class="inline-flex items-center gap-1.5 text-sm font-medium text-sage-dark hover:text-sage transition-colors shrink-0">
-          See the newsletter
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-      </div>
-
-      <div class="grid gap-5 md:grid-cols-3">
-        {franchises.map((franchise) => (
-          <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
-            <div class="w-10 h-10 rounded-xl bg-sage-light/30 flex items-center justify-center text-sage-dark mb-4" set:html={franchise.icon} />
-            <h3 class="font-heading text-xl font-semibold text-bark mb-2">{franchise.title}</h3>
-            <p class="text-sm leading-relaxed text-stone">{franchise.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter banner (bottom of page) -->
-  <NewsletterSignup variant="banner" source="homepage-banner" />
-
-  <!-- About teaser -->
-  <section class="py-20 px-6 bg-cream-dark/40">
-    <div class="max-w-4xl mx-auto text-center">
-      <div class="w-16 h-0.5 bg-sage mx-auto mb-8"></div>
-      <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark mb-5">
-        Science-backed. Human-curated.
-      </h2>
-      <p class="text-stone text-lg leading-relaxed max-w-2xl mx-auto">
-        The wellness internet is noisy. BestKarma exists for people who want the signal without the noise — evidence-based health and longevity guidance that respects your time and your intelligence.
-      </p>
-      <a href="/about" class="inline-flex items-center gap-2 mt-8 text-sage-dark font-medium hover:text-sage transition-colors">
-        Our story →
-      </a>
-    </div>
-  </section>
-
-</BaseLayout>
+  </div>
+</body>
+</html>
