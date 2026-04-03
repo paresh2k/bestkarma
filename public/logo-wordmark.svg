@@ -54,14 +54,7 @@
     font-family="Fraunces, Georgia, serif"
     font-weight="500"
     font-size="72"
-    letter-spacing="-1.5"
-    fill="#2D2016">Best</text>
-  <text
-    x="355"
-    y="104"
-    font-family="Fraunces, Georgia, serif"
-    font-weight="500"
-    font-size="72"
-    letter-spacing="-1.5"
-    fill="#7D9B76">Karma</text>
+    letter-spacing="-1.5">
+    <tspan fill="#2D2016">Best</tspan><tspan fill="#7D9B76">Karma</tspan>
+  </text>
 </svg>

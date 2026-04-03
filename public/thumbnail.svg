@@ -1,0 +1,52 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#2D2016"/>
+
+  <!-- Subtle texture rings (decorative) -->
+  <circle cx="1050" cy="315" r="420" fill="none" stroke="#FAF7F0" stroke-width="0.6" opacity="0.06"/>
+  <circle cx="1050" cy="315" r="310" fill="none" stroke="#FAF7F0" stroke-width="0.6" opacity="0.06"/>
+  <circle cx="1050" cy="315" r="200" fill="none" stroke="#FAF7F0" stroke-width="0.6" opacity="0.06"/>
+
+  <!-- Logo mark — scaled to 140px, positioned left -->
+  <g transform="translate(100, 175) scale(0.35)">
+    <defs>
+      <path id="pk-petal-t"
+        d="M200,148 C186,148 166,106 200,54 C234,106 214,148 200,148Z"/>
+    </defs>
+    <g fill="#D6E9D4" opacity="0.5">
+      <use href="#pk-petal-t" transform="rotate(45,200,200)"/>
+      <use href="#pk-petal-t" transform="rotate(135,200,200)"/>
+      <use href="#pk-petal-t" transform="rotate(225,200,200)"/>
+      <use href="#pk-petal-t" transform="rotate(315,200,200)"/>
+    </g>
+    <g fill="#A8C5A5">
+      <use href="#pk-petal-t"/>
+      <use href="#pk-petal-t" transform="rotate(90,200,200)"/>
+      <use href="#pk-petal-t" transform="rotate(180,200,200)"/>
+      <use href="#pk-petal-t" transform="rotate(270,200,200)"/>
+    </g>
+    <circle cx="200" cy="200" r="66" fill="#FAF7F0"/>
+    <circle cx="200" cy="200" r="66" fill="none" stroke="#C5D9C3" stroke-width="1.5"/>
+    <circle cx="200" cy="162" r="18" fill="#4A6741"/>
+    <path fill="#4A6741"
+      d="M194,180 C185,186 160,207 150,226 C144,241 155,252 174,255 C183,257 192,254 200,251 C208,254 217,257 226,255 C245,252 256,241 250,226 C240,207 215,186 206,180Z"/>
+    <circle cx="200" cy="155" r="3.5" fill="#C47C5A"/>
+    <circle cx="157" cy="237" r="5.5" fill="#FAF7F0" opacity="0.55"/>
+    <circle cx="243" cy="237" r="5.5" fill="#FAF7F0" opacity="0.55"/>
+  </g>
+
+  <!-- Divider line -->
+  <line x1="240" y1="210" x2="240" y2="420" stroke="#7D9B76" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Publication name -->
+  <text x="280" y="310" fill="#FAF7F0" font-size="86" font-weight="700" letter-spacing="-2">BestKarma</text>
+
+  <!-- Tagline -->
+  <text x="282" y="368" fill="#A8C5A5" font-size="28" letter-spacing="1" font-weight="400">Evidence-based wellness &amp; longevity</text>
+
+  <!-- Bottom rule + descriptor -->
+  <line x1="100" y1="490" x2="1100" y2="490" stroke="#FAF7F0" stroke-width="0.5" opacity="0.12"/>
+  <text x="100" y="522" fill="#FAF7F0" font-size="18" opacity="0.35" letter-spacing="3" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="300">BESTKARMA.COM</text>
+
+</svg>
