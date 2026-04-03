@@ -4,6 +4,7 @@ import ArticleCard from '../components/ArticleCard.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import { getCollection } from 'astro:content';
 import { categories } from '../lib/categories';
+import { HOMEPAGE_COLLECTIONS, getArticlesForTag } from '../lib/collections';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -76,44 +77,10 @@ const proofPoints = [
   },
 ];
 
-const collections = [
-  {
-    title: 'Most shared',
-    description: 'The articles readers send to friends and family most often',
-    slugs: [
-      'grip-strength-longevity',
-      'alcohol-rem-sleep-suppression',
-      'perimenopause-anxiety-brain-chemistry',
-      'loneliness-epidemic-health',
-      'protein-muscle-aging',
-      'burnout-science-brain-body-effects',
-    ],
-  },
-  {
-    title: 'Best for women 40+',
-    description: 'Healthspan, hormones, and what the evidence says matters most',
-    slugs: [
-      'perimenopause-anxiety-brain-chemistry',
-      'bone-density-perimenopause-prevention',
-      'cortisol-women-hormones-life-stages',
-      'creatine-women-benefits',
-      'cardiovascular-risk-women-sex-differences',
-      'estrogen-brain-cognitive-protection',
-    ],
-  },
-  {
-    title: 'Quick wins',
-    description: 'Short reads with one clear action step you can try today',
-    slugs: [
-      'exercise-snacks-movement',
-      'temperature-sleep-core-cooling',
-      'mouth-taping-sleep-evidence',
-      'walking-longevity-science',
-      'magnesium-sleep',
-      'micro-meditation-two-minute-practices',
-    ],
-  },
-];
+const collectionData = HOMEPAGE_COLLECTIONS.map(c => ({
+  ...c,
+  articles: getArticlesForTag(allPosts, c.tag),
+}));
 
 const franchises = [
   {
@@ -249,8 +216,8 @@ const franchises = [
       </div>
 
       <div class="space-y-12">
-        {collections.map((collection) => {
-          const posts = collection.slugs.map(s => postBySlug[s]).filter(Boolean);
+        {collectionData.map((collection) => {
+          const posts = collection.articles;
           if (posts.length === 0) return null;
 
           return (
