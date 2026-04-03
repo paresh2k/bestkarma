@@ -1,7 +1,10 @@
 ---
 import { categories } from '../lib/categories';
 
-const navLinks = categories.map(({ label, href }) => ({ label, href }));
+const navLinks = [
+  { label: 'Start Here', href: '/start-here' },
+  ...categories.map(({ label, href }) => ({ label, href })),
+];
 ---
 
 <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur-sm border-b border-border">
@@ -20,7 +23,11 @@ const navLinks = categories.map(({ label, href }) => ({ label, href }));
         <li>
           <a
             href={link.href}
-            class="whitespace-nowrap text-stone hover:text-sage-dark font-medium text-sm transition-colors"
+            class={`whitespace-nowrap text-sm transition-colors ${
+              link.href === '/start-here'
+                ? 'text-sage-dark hover:text-sage font-semibold'
+                : 'text-stone hover:text-sage-dark font-medium'
+            }`}
           >
             {link.label}
           </a>
@@ -74,7 +81,11 @@ const navLinks = categories.map(({ label, href }) => ({ label, href }));
         <li>
           <a
             href={link.href}
-            class="block text-stone hover:text-sage-dark font-medium py-2 text-lg transition-colors"
+            class={`block py-2 text-lg transition-colors ${
+              link.href === '/start-here'
+                ? 'text-sage-dark hover:text-sage font-semibold'
+                : 'text-stone hover:text-sage-dark font-medium'
+            }`}
           >
             {link.label}
           </a>
