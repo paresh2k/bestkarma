@@ -8,12 +8,57 @@ const allPosts = await getCollection('blog');
 const sampleIssues = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
+
+const valueProps = [
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+    title: 'Evidence check',
+    description: 'One popular health claim tested against the research. We tell you what holds up, what\u2019s overhyped, and what to actually do.',
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    title: 'One practical action',
+    description: 'Every issue ends with a single, specific thing you can try this week. No 17-step protocols \u2014 one change that matters.',
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>`,
+    title: 'No supplements, no sponsors',
+    description: 'We don\u2019t sell products or run ads. Our only incentive is to be the most trustworthy health newsletter you read.',
+  },
+];
+
+const readingPaths = [
+  { label: 'Sleep fixes', href: '/start-here', icon: '\u{1F4A4}' },
+  { label: 'Women\u2019s healthspan', href: '/start-here', icon: '\u2728' },
+  { label: 'Everyday longevity', href: '/start-here', icon: '\u{1F331}' },
+  { label: 'Stress & nervous system', href: '/start-here', icon: '\u{1F9D8}' },
+];
+
+const faqs = [
+  {
+    q: 'How often do you send?',
+    a: 'Once a week, on Sunday morning.',
+  },
+  {
+    q: 'Is it really free?',
+    a: 'Yes. No paywall, no upsells. We may add a premium tier later, but the weekly issue will always be free.',
+  },
+  {
+    q: 'Who writes this?',
+    a: 'Paresh Chauhan, founder of BestKarma. Every article goes through a structured editorial validation process with primary sources cited inline. We are actively building a medical advisory board \u2014 until then, we are transparent about our process and honest about the limits of what we know.',
+  },
+  {
+    q: 'Can I unsubscribe?',
+    a: 'One click, anytime. We\u2019d rather have 1,000 engaged readers than 10,000 who ignore us.',
+  },
+];
 ---
 
 <BaseLayout
   title="Newsletter"
-  description="Subscribe for one practical, science-backed health and longevity insight every Sunday."
+  description="BestKarma Weekly: one science-backed health and longevity insight every Sunday, with one thing you can act on that week."
 >
+  <!-- Hero -->
   <section class="relative overflow-hidden bg-bark text-cream">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute -top-20 right-0 h-80 w-80 rounded-full bg-sage/20 blur-3xl"></div>
@@ -24,10 +69,10 @@ const sampleIssues = allPosts
         <div>
           <p class="text-sage-light text-sm font-semibold uppercase tracking-widest mb-4">BestKarma Weekly</p>
           <h1 class="font-heading text-4xl md:text-6xl font-semibold leading-tight">
-            Live well. Age wisely.
+            One insight. One action. Every Sunday.
           </h1>
           <p class="mt-6 max-w-2xl text-lg leading-relaxed text-cream/75">
-            BestKarma Weekly turns credible health and longevity research into clear, practical guidance you can use: one idea, one takeaway, and enough context to understand why it matters.
+            BestKarma Weekly turns the best health and longevity research into something you can actually use — delivered free to your inbox.
           </p>
           <div class="mt-8 grid gap-3 sm:grid-cols-3">
             <div class="rounded-2xl border border-cream/15 bg-cream/5 p-4">
@@ -47,20 +92,40 @@ const sampleIssues = allPosts
 
         <div class="rounded-3xl border border-cream/10 bg-cream/10 p-8 backdrop-blur-sm">
           <p class="text-sm font-semibold uppercase tracking-widest text-sage-light">Join free</p>
-          <h2 class="mt-3 font-heading text-3xl font-semibold">What you get</h2>
+          <h2 class="mt-3 font-heading text-3xl font-semibold">Subscribe now</h2>
           <ul class="mt-5 space-y-3 text-sm leading-relaxed text-cream/75">
             <li>One science-backed idea worth your attention this week.</li>
             <li>A short explanation of what the research actually supports.</li>
             <li>A realistic habit or experiment to try next.</li>
           </ul>
           <div class="mt-6">
-            <NewsletterSignup variant="inline" source="newsletter-page" />
+            <NewsletterSignup variant="inline" source="newsletter-page-hero" />
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- What you get -->
+  <section class="px-6 py-16 bg-mist border-b border-sage-light/20">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-10">
+        <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">What you get</p>
+        <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">Every issue, every week.</h2>
+      </div>
+      <div class="grid gap-5 md:grid-cols-3">
+        {valueProps.map((prop) => (
+          <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-sage-light/30 flex items-center justify-center text-sage-dark mb-4" set:html={prop.icon} />
+            <h3 class="font-heading text-xl font-semibold text-bark mb-2">{prop.title}</h3>
+            <p class="text-sm leading-relaxed text-stone">{prop.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Sample issues -->
   <section class="max-w-6xl mx-auto px-6 py-16">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
@@ -87,13 +152,71 @@ const sampleIssues = allPosts
     </div>
   </section>
 
-  <section class="border-t border-border bg-cream-dark/50">
+  <!-- What readers say -->
+  <section class="border-y border-border bg-cream-dark/50">
     <div class="max-w-4xl mx-auto px-6 py-16 text-center">
-      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Why this exists</p>
-      <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">A calmer alternative to health overload</h2>
-      <p class="mt-4 text-lg leading-relaxed text-stone">
-        BestKarma Weekly is for readers who want useful guidance without chasing every trend. We focus on ideas that are practical, science-backed, and worth your time.
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-6">What readers say</p>
+      <blockquote class="rounded-2xl border border-border bg-white p-8 shadow-sm max-w-2xl mx-auto">
+        <p class="font-heading text-xl md:text-2xl font-semibold text-bark leading-snug italic">
+          "The only health newsletter I actually read every week."
+        </p>
+        <p class="mt-4 text-stone-light text-sm">— Placeholder for future testimonial</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- What we cover -->
+  <section class="max-w-6xl mx-auto px-6 py-16">
+    <div class="mb-8">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">What we cover</p>
+      <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">Four reading paths to explore</h2>
+      <p class="mt-3 text-stone text-lg max-w-2xl">
+        Every issue draws from one of these core topics. Pick the path that matters to you, or follow along each week.
       </p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {readingPaths.map((rp) => (
+        <a
+          href={rp.href}
+          class="group rounded-2xl border border-border bg-white p-6 hover:border-sage-light hover:shadow-sm transition-all"
+        >
+          <span class="text-2xl mb-3 block">{rp.icon}</span>
+          <h3 class="font-heading text-lg font-semibold text-bark group-hover:text-sage-dark transition-colors">{rp.label}</h3>
+          <p class="mt-2 text-sage-dark text-sm font-medium">Explore path &rarr;</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="border-t border-border bg-cream-dark/40">
+    <div class="max-w-2xl mx-auto px-6 py-16 text-center">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">Ready?</p>
+      <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark">
+        Join BestKarma Weekly
+      </h2>
+      <p class="mt-4 text-stone text-lg leading-relaxed mb-8">
+        One idea, one action, every Sunday. Free forever.
+      </p>
+      <div class="max-w-md mx-auto">
+        <NewsletterSignup variant="inline" source="newsletter-page-bottom" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-border">
+    <div class="max-w-3xl mx-auto px-6 py-16">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-2">FAQ</p>
+      <h2 class="font-heading text-3xl md:text-4xl font-semibold text-bark mb-10">Common questions</h2>
+      <div class="space-y-6">
+        {faqs.map((faq) => (
+          <div class="rounded-2xl border border-border bg-white p-6">
+            <h3 class="font-heading text-lg font-semibold text-bark">{faq.q}</h3>
+            <p class="mt-2 text-stone text-sm leading-relaxed">{faq.a}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
