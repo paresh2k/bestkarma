@@ -11,116 +11,210 @@ const stagePaths = READING_PATHS.filter(p => p.group === 'stage');
 const allPaths = [...goalPaths, ...stagePaths];
 
 const icons: Record<string, string> = {
-  moon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-  heart: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-  leaf: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
-  wind: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
-  dumbbell: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767-1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l1.767 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>',
-  zap: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
-  clock: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  moon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+  heart: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  leaf: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+  wind: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
+  dumbbell: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767-1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l1.767 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>',
+  zap: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
+  clock: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  target: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  users: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
 };
 
-// Map path IDs to icons and accent styles
-const pathStyles: Record<string, { icon: string; accentClass: string; selectedClass: string; number: string; pill: string }> = {
-  sleep:      { icon: 'moon',     accentClass: 'bg-mist border-sage-light/40 text-sage-dark',             selectedClass: 'bg-sage-light/40 border-sage ring-2 ring-sage/20',       number: 'bg-sage text-cream',      pill: 'bg-sage-light/25 text-sage-dark' },
-  stress:     { icon: 'wind',     accentClass: 'bg-cream-dark border-border text-stone',                  selectedClass: 'bg-cream-dark/80 border-bark/30 ring-2 ring-bark/10',    number: 'bg-stone text-cream',     pill: 'bg-cream-dark text-stone' },
-  longevity:  { icon: 'leaf',     accentClass: 'bg-gold-light/30 border-gold/20 text-stone',              selectedClass: 'bg-gold-light/50 border-gold ring-2 ring-gold/20',       number: 'bg-gold text-cream',      pill: 'bg-gold-light/30 text-bark' },
-  women:      { icon: 'heart',    accentClass: 'bg-terracotta-light/20 border-terracotta/20 text-terracotta', selectedClass: 'bg-terracotta-light/30 border-terracotta ring-2 ring-terracotta/20', number: 'bg-terracotta text-cream', pill: 'bg-terracotta-light/25 text-terracotta' },
-  men:        { icon: 'dumbbell', accentClass: 'bg-mist border-sage-light/40 text-sage-dark',             selectedClass: 'bg-sage-light/40 border-sage ring-2 ring-sage/20',       number: 'bg-sage text-cream',      pill: 'bg-sage-light/25 text-sage-dark' },
-  genz:       { icon: 'zap',      accentClass: 'bg-gold-light/30 border-gold/20 text-stone',              selectedClass: 'bg-gold-light/50 border-gold ring-2 ring-gold/20',       number: 'bg-gold text-cream',      pill: 'bg-gold-light/30 text-bark' },
-  millennials:{ icon: 'clock',    accentClass: 'bg-terracotta-light/20 border-terracotta/20 text-terracotta', selectedClass: 'bg-terracotta-light/30 border-terracotta ring-2 ring-terracotta/20', number: 'bg-terracotta text-cream', pill: 'bg-terracotta-light/25 text-terracotta' },
+const pathStyleMap: Record<string, { icon: string; number: string; pill: string }> = {
+  sleep:      { icon: 'moon',     number: 'bg-sage text-cream',      pill: 'bg-sage-light/25 text-sage-dark' },
+  stress:     { icon: 'wind',     number: 'bg-stone text-cream',     pill: 'bg-cream-dark text-stone' },
+  longevity:  { icon: 'leaf',     number: 'bg-gold text-cream',      pill: 'bg-gold-light/30 text-bark' },
+  women:      { icon: 'heart',    number: 'bg-terracotta text-cream', pill: 'bg-terracotta-light/25 text-terracotta' },
+  men:        { icon: 'dumbbell', number: 'bg-sage text-cream',      pill: 'bg-sage-light/25 text-sage-dark' },
+  genz:       { icon: 'zap',      number: 'bg-gold text-cream',      pill: 'bg-gold-light/30 text-bark' },
+  millennials:{ icon: 'clock',    number: 'bg-terracotta text-cream', pill: 'bg-terracotta-light/25 text-terracotta' },
 };
+
+// Pre-compute article counts per path
+const pathArticleCounts: Record<string, number> = {};
+for (const p of allPaths) {
+  pathArticleCounts[p.id] = getArticlesForTag(allPosts, p.tag, p.order).length;
+}
 ---
 
 <BaseLayout
   title="Start Here"
-  description="New to BestKarma? Pick a reading path that matches what matters to you right now — sleep, women's healthspan, longevity, or stress recovery."
+  description="New to BestKarma? Pick a reading path that matches what matters to you right now: sleep, women's healthspan, longevity, or stress recovery."
 >
   <!-- Header -->
   <section class="bg-cream-dark/60 border-b border-border">
-    <div class="max-w-4xl mx-auto px-6 pt-16 pb-10">
-      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-3">New here?</p>
+    <div class="max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
+      <p class="text-sage-dark text-sm font-semibold uppercase tracking-widest mb-4">New here?</p>
       <h1 class="font-heading text-4xl md:text-5xl font-semibold text-bark leading-tight">
         Start here
       </h1>
-      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-stone">
-        {allPosts.length} articles is a lot. Pick what matters to you right now and we'll show you the best pieces to read first.
+      <p class="mt-6 max-w-2xl mx-auto text-lg leading-relaxed text-stone">
+        {allPosts.length} articles is a lot. Let's narrow it down.
       </p>
-
-      <!-- Path selector grid -->
-      <div id="path-selector" class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {allPaths.map((path) => {
-          const style = pathStyles[path.id];
-          return (
-            <a
-              href={`#${path.id}`}
-              data-path={path.id}
-              data-accent={style.accentClass}
-              data-selected={style.selectedClass}
-              class={`path-card group rounded-2xl border p-4 transition-all cursor-pointer ${style.accentClass}`}
-            >
-              <div class="mb-2 opacity-75 group-hover:opacity-100 transition-opacity" set:html={icons[style.icon]} />
-              <h3 class="font-heading text-sm md:text-base font-semibold text-bark leading-snug">{path.title}</h3>
-              <p class="mt-1 text-xs leading-relaxed text-stone line-clamp-2">{path.description}</p>
-            </a>
-          );
-        })}
-      </div>
     </div>
   </section>
 
-  <!-- Path article sections -->
-  <section class="max-w-4xl mx-auto px-6 py-16 space-y-16">
+  <!-- Step 1: The opening question -->
+  <section id="step-1" class="max-w-3xl mx-auto px-6 py-16">
+    <p class="text-center text-stone text-sm mb-8">What brings you here?</p>
+
+    <div class="grid gap-5 md:grid-cols-2">
+      <!-- Card A: Health goal -->
+      <button
+        data-group="goal"
+        class="group-card group text-left rounded-3xl border border-border bg-white p-8 md:p-10 hover:border-sage-light hover:shadow-md transition-all cursor-pointer"
+      >
+        <div class="text-sage mb-4" set:html={icons.target} />
+        <h2 class="font-heading text-xl md:text-2xl font-semibold text-bark mb-2">I have a health goal</h2>
+        <p class="text-stone text-sm leading-relaxed">Sleep, stress, longevity, or something specific</p>
+      </button>
+
+      <!-- Card B: Life stage -->
+      <button
+        data-group="stage"
+        class="group-card group text-left rounded-3xl border border-border bg-white p-8 md:p-10 hover:border-sage-light hover:shadow-md transition-all cursor-pointer"
+      >
+        <div class="text-terracotta mb-4" set:html={icons.users} />
+        <h2 class="font-heading text-xl md:text-2xl font-semibold text-bark mb-2">Show me what fits my life stage</h2>
+        <p class="text-stone text-sm leading-relaxed">Curated paths for where you are right now</p>
+      </button>
+    </div>
+
+    <p class="text-center mt-10">
+      <a href="/blog" class="text-stone-light text-sm hover:text-sage-dark transition-colors">
+        Or browse all {allPosts.length} articles &rarr;
+      </a>
+    </p>
+  </section>
+
+  <!-- Step 2: Path options (hidden initially) -->
+  <section id="step-2" class="hidden max-w-3xl mx-auto px-6 pb-16">
+    <!-- Back link -->
+    <button id="back-btn" class="inline-flex items-center gap-2 text-stone-light hover:text-sage-dark text-sm mb-8 transition-colors cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+      </svg>
+      Back
+    </button>
+
+    <p id="step-2-label" class="text-stone text-sm mb-6"></p>
+
+    <!-- Goal paths -->
+    <div id="goal-paths" class="hidden space-y-4">
+      {goalPaths.map((path) => {
+        const style = pathStyleMap[path.id];
+        return (
+          <a
+            href={`#${path.id}`}
+            data-path={path.id}
+            class="path-option group flex items-center gap-5 rounded-2xl border border-border bg-white p-5 md:p-6 hover:border-sage-light hover:shadow-sm transition-all"
+          >
+            <div class="text-sage-dark opacity-75 group-hover:opacity-100 transition-opacity shrink-0" set:html={icons[style.icon]} />
+            <div class="flex-1 min-w-0">
+              <h3 class="font-heading text-lg font-semibold text-bark group-hover:text-sage-dark transition-colors">{path.title}</h3>
+              <p class="text-stone text-sm mt-0.5">{path.description}</p>
+            </div>
+            <span class="text-stone-light text-xs shrink-0">{pathArticleCounts[path.id]} articles</span>
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- Stage paths -->
+    <div id="stage-paths" class="hidden space-y-4">
+      {stagePaths.map((path) => {
+        const style = pathStyleMap[path.id];
+        return (
+          <a
+            href={`#${path.id}`}
+            data-path={path.id}
+            class="path-option group flex items-center gap-5 rounded-2xl border border-border bg-white p-5 md:p-6 hover:border-sage-light hover:shadow-sm transition-all"
+          >
+            <div class="text-terracotta opacity-75 group-hover:opacity-100 transition-opacity shrink-0" set:html={icons[style.icon]} />
+            <div class="flex-1 min-w-0">
+              <h3 class="font-heading text-lg font-semibold text-bark group-hover:text-sage-dark transition-colors">{path.title}</h3>
+              <p class="text-stone text-sm mt-0.5">{path.description}</p>
+            </div>
+            <span class="text-stone-light text-xs shrink-0">{pathArticleCounts[path.id]} articles</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- Step 3: Reading lists (all rendered, shown on demand) -->
+  <section id="step-3" class="hidden">
     {allPaths.map((path) => {
-      const style = pathStyles[path.id];
+      const style = pathStyleMap[path.id];
       const articles = getArticlesForTag(allPosts, path.tag, path.order);
 
       return (
-        <div id={path.id} class="path-section scroll-mt-24">
-          <!-- Path header -->
-          <div class="flex items-center gap-3 mb-2">
-            <div class="opacity-75" set:html={icons[style.icon]} />
-            <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark">{path.title}</h2>
-          </div>
-          <p class="text-stone leading-relaxed mb-6">{path.description}</p>
+        <div id={path.id} data-path-section class="hidden scroll-mt-16">
+          <div class="max-w-3xl mx-auto px-6 py-16">
+            <!-- Back to paths -->
+            <button data-back-to-paths class="inline-flex items-center gap-2 text-stone-light hover:text-sage-dark text-sm mb-10 transition-colors cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+              </svg>
+              Other paths
+            </button>
 
-          <!-- Article list -->
-          <div class="space-y-4">
-            {articles.map((post, i) => {
-              const slug = post.id.replace(/\.mdx?$/, '');
-              const note = path.notes[slug];
-              return (
-                <a
-                  href={`/blog/${slug}`}
-                  class="group flex gap-4 md:gap-5 rounded-2xl border border-border bg-white p-4 md:p-5 hover:border-sage-light hover:shadow-sm transition-all"
-                >
-                  <div class={`w-8 h-8 rounded-full ${style.number} flex items-center justify-center text-sm font-bold shrink-0 mt-0.5`}>
-                    {i + 1}
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    {note && (
-                      <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${style.pill} mb-2`}>
-                        {note}
+            <!-- Path header -->
+            <div class="flex items-center gap-3 mb-2">
+              <div class="opacity-75" set:html={icons[style.icon]} />
+              <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark">{path.title}</h2>
+            </div>
+            <p class="text-stone leading-relaxed mb-3">{path.description}</p>
+            <p class="text-sage-dark text-xs font-semibold uppercase tracking-widest mb-8">Read these in order</p>
+
+            <!-- Article list -->
+            <div class="space-y-4">
+              {articles.map((post, i) => {
+                const slug = post.id.replace(/\.mdx?$/, '');
+                const note = path.notes[slug];
+                return (
+                  <a
+                    href={`/blog/${slug}`}
+                    class="group flex gap-4 md:gap-5 rounded-2xl border border-border bg-white p-4 md:p-5 hover:border-sage-light hover:shadow-sm transition-all"
+                  >
+                    <div class={`w-8 h-8 rounded-full ${style.number} flex items-center justify-center text-sm font-bold shrink-0 mt-0.5`}>
+                      {i + 1}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      {note && (
+                        <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${style.pill} mb-2`}>
+                          {note}
+                        </span>
+                      )}
+                      <h3 class="font-heading text-lg font-semibold text-bark leading-snug group-hover:text-sage-dark transition-colors">
+                        {post.data.title}
+                      </h3>
+                      <p class="mt-1 text-stone text-sm leading-relaxed line-clamp-2">
+                        {post.data.description}
+                      </p>
+                      <span class="inline-block mt-2 text-sage-dark text-xs font-medium">
+                        {post.data.readTime ?? 5} min read
                       </span>
-                    )}
-                    <h3 class="font-heading text-lg font-semibold text-bark leading-snug group-hover:text-sage-dark transition-colors">
-                      {post.data.title}
-                    </h3>
-                    <p class="mt-1 text-stone text-sm leading-relaxed line-clamp-2">
-                      {post.data.description}
-                    </p>
-                    <span class="inline-block mt-2 text-sage-dark text-xs font-medium">
-                      {post.data.readTime ?? 5} min read
-                    </span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
 
-          <!-- Newsletter signup per path -->
-          <div class="mt-8">
-            <NewsletterSignup variant="inline" source={`start-here-${path.id}`} />
+            <!-- Newsletter -->
+            <div class="mt-12">
+              <NewsletterSignup variant="inline" source={`start-here-${path.id}`} />
+            </div>
+
+            <!-- Explore another path -->
+            <div class="mt-10 pt-8 border-t border-border text-center">
+              <p class="text-stone text-sm mb-4">Want to explore a different topic?</p>
+              <button data-restart class="inline-flex items-center gap-2 rounded-full border border-bark/10 bg-white/70 px-6 py-2.5 text-sm font-semibold text-bark hover:border-sage-light hover:text-sage-dark transition-colors cursor-pointer">
+                Choose another path
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -129,7 +223,7 @@ const pathStyles: Record<string, { icon: string; accentClass: string; selectedCl
 
   <!-- Bottom links -->
   <section class="border-t border-border bg-cream-dark/40">
-    <div class="max-w-4xl mx-auto px-6 py-16 text-center">
+    <div class="max-w-3xl mx-auto px-6 py-16 text-center">
       <h2 class="font-heading text-2xl md:text-3xl font-semibold text-bark mb-3">
         Or dive straight in
       </h2>
@@ -159,42 +253,126 @@ const pathStyles: Record<string, { icon: string; accentClass: string; selectedCl
 </BaseLayout>
 
 <script>
-  const cards = document.querySelectorAll<HTMLAnchorElement>('.path-card');
+  const step1 = document.getElementById('step-1')!;
+  const step2 = document.getElementById('step-2')!;
+  const step3 = document.getElementById('step-3')!;
+  const step2Label = document.getElementById('step-2-label')!;
+  const goalPaths = document.getElementById('goal-paths')!;
+  const stagePaths = document.getElementById('stage-paths')!;
+  const backBtn = document.getElementById('back-btn')!;
 
-  function selectCard(id: string) {
-    cards.forEach(card => {
-      const cardId = card.dataset.path;
-      const accent = card.dataset.accent ?? '';
-      const selected = card.dataset.selected ?? '';
+  // Map path IDs to their group
+  const pathGroups: Record<string, string> = {};
+  document.querySelectorAll('[data-path-section]').forEach(el => {
+    const id = el.id;
+    // Determine group from which container has a link with this path
+    if (goalPaths.querySelector(`[data-path="${id}"]`)) pathGroups[id] = 'goal';
+    if (stagePaths.querySelector(`[data-path="${id}"]`)) pathGroups[id] = 'stage';
+  });
 
-      if (cardId === id) {
-        card.className = `path-card group rounded-2xl border p-4 transition-all cursor-pointer ${selected}`;
-      } else {
-        card.className = `path-card group rounded-2xl border p-4 transition-all cursor-pointer ${accent}`;
-      }
-    });
+  function showStep1() {
+    step1.classList.remove('hidden');
+    step2.classList.add('hidden');
+    step3.classList.add('hidden');
+    document.querySelectorAll('[data-path-section]').forEach(el => el.classList.add('hidden'));
+    history.replaceState({ step: 1 }, '', '/start-here');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Handle click
-  cards.forEach(card => {
-    card.addEventListener('click', (e) => {
+  function showStep2(group: string) {
+    step1.classList.add('hidden');
+    step2.classList.remove('hidden');
+    step3.classList.add('hidden');
+    document.querySelectorAll('[data-path-section]').forEach(el => el.classList.add('hidden'));
+
+    if (group === 'goal') {
+      step2Label.textContent = 'Pick a health goal';
+      goalPaths.classList.remove('hidden');
+      stagePaths.classList.add('hidden');
+    } else {
+      step2Label.textContent = 'Pick your life stage';
+      goalPaths.classList.add('hidden');
+      stagePaths.classList.remove('hidden');
+    }
+
+    history.pushState({ step: 2, group }, '', '/start-here');
+    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showStep3(pathId: string) {
+    step1.classList.add('hidden');
+    step2.classList.add('hidden');
+    step3.classList.remove('hidden');
+
+    document.querySelectorAll('[data-path-section]').forEach(el => el.classList.add('hidden'));
+    const section = document.getElementById(pathId);
+    if (section) {
+      section.classList.remove('hidden');
+      history.pushState({ step: 3, pathId }, '', `#${pathId}`);
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Step 1: group card clicks
+  document.querySelectorAll('.group-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const group = (card as HTMLElement).dataset.group;
+      if (group) showStep2(group);
+    });
+  });
+
+  // Step 2: path option clicks
+  document.querySelectorAll('.path-option').forEach(link => {
+    link.addEventListener('click', (e) => {
       e.preventDefault();
-      const id = card.dataset.path;
-      if (!id) return;
+      const pathId = (link as HTMLElement).dataset.path;
+      if (pathId) showStep3(pathId);
+    });
+  });
 
-      selectCard(id);
+  // Back buttons
+  backBtn.addEventListener('click', showStep1);
 
-      const section = document.getElementById(id);
+  document.querySelectorAll('[data-back-to-paths]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest('[data-path-section]');
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        history.replaceState(null, '', `#${id}`);
+        const group = pathGroups[section.id] ?? 'goal';
+        showStep2(group);
       }
     });
   });
 
-  // Handle hash on load
-  const hash = window.location.hash.replace('#', '');
-  if (hash) {
-    selectCard(hash);
+  document.querySelectorAll('[data-restart]').forEach(btn => {
+    btn.addEventListener('click', showStep1);
+  });
+
+  // Browser back button
+  window.addEventListener('popstate', (e) => {
+    const state = e.state;
+    if (!state || state.step === 1) {
+      step1.classList.remove('hidden');
+      step2.classList.add('hidden');
+      step3.classList.add('hidden');
+      document.querySelectorAll('[data-path-section]').forEach(el => el.classList.add('hidden'));
+    } else if (state.step === 2) {
+      showStep2(state.group);
+    } else if (state.step === 3) {
+      showStep3(state.pathId);
+    }
+  });
+
+  // Handle direct URL hash on load (e.g. /start-here#women)
+  const initialHash = window.location.hash.replace('#', '');
+  if (initialHash && document.getElementById(initialHash)) {
+    // Jump directly to the path, skip step 1 and 2
+    step1.classList.add('hidden');
+    step2.classList.add('hidden');
+    step3.classList.remove('hidden');
+    const section = document.getElementById(initialHash);
+    if (section) section.classList.remove('hidden');
+  } else {
+    // Set initial history state
+    history.replaceState({ step: 1 }, '', '/start-here');
   }
 </script>
